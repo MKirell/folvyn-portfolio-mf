@@ -1,0 +1,17 @@
+name: pr
+
+on:
+  pull_request:
+  schedule:
+    - cron: '0 4 * * 1'
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality.yml

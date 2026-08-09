@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg-dark: #14161b;
+  --color-bg-light: #f4f1ea;
+  --color-bg: light-dark(var(--color-bg-light), var(--color-bg-dark));
+
+  --color-bg-tint-dark: #1a1d24;
+  --color-bg-tint-light: #ece8df;
+  --color-bg-tint: light-dark(var(--color-bg-tint-light), var(--color-bg-tint-dark));
+
+  --color-surface-dark: #1d212b;
+  --color-surface-light: #fffdf8;
+  --color-surface: light-dark(var(--color-surface-light), var(--color-surface-dark));
+
+  --color-surface-2-dark: #232836;
+  --color-surface-2-light: #e0d9cc;
+  --color-surface-2: light-dark(var(--color-surface-2-light), var(--color-surface-2-dark));
+
+  --color-ink-dark: #e6eaf0;
+  --color-ink-light: #21201d;
+  --color-ink: light-dark(var(--color-ink-light), var(--color-ink-dark));
+
+  --color-ink-soft-dark: #b2bccb;
+  --color-ink-soft-light: #4a443c;
+  --color-ink-soft: light-dark(var(--color-ink-soft-light), var(--color-ink-soft-dark));
+
+  --color-muted-dark: #8a93a3;
+  --color-muted-light: #665f56;
+  --color-muted: light-dark(var(--color-muted-light), var(--color-muted-dark));
+
+  --color-accent-dark: #d97757;
+  --color-accent-light: #c9603c;
+  --color-accent: light-dark(var(--color-accent-light), var(--color-accent-dark));
+
+  --color-accent-deep-dark: #f2a089;
+  --color-accent-deep-light: #9e4526;
+  --color-accent-deep: light-dark(var(--color-accent-deep-light), var(--color-accent-deep-dark));
+
+  --color-sage-dark: #8fbf8a;
+  --color-sage-light: #3f6b4c;
+  --color-sage: light-dark(var(--color-sage-light), var(--color-sage-dark));
+
+  --color-gold-dark: #d6b06a;
+  --color-gold-light: #8a6420;
+  --color-gold: light-dark(var(--color-gold-light), var(--color-gold-dark));
+
+  --color-line-dark: #ffffff;
+  --color-line-light: #1c1813;
+  --color-line: light-dark(var(--color-line-light), var(--color-line-dark));
+
+  --color-scrim-dark: #000000;
+  --color-scrim-light: #cfc6b7;
+  --color-scrim: light-dark(var(--color-scrim-light), var(--color-scrim-dark));
+
+  --font-disp: Fraunces, serif;
+  --font-body: Inter, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --radius-sm: 7px;
+  --radius: 14px;
+  --radius-lg: 22px;
+
+  --container-container: 1440px;
+
+  --spacing-pad: clamp(24px, 5vw, 72px);
+
+  --breakpoint-1400: 1400px;
+  --breakpoint-1200: 1200px;
+  --breakpoint-900: 900px;
+  --breakpoint-700: 700px;
+  --breakpoint-600: 600px;
+  --breakpoint-480: 480px;
+  --breakpoint-420: 420px;
+
+  --default-transition-duration: 250ms;
+  --default-transition-timing-function: ease;
+
+  --animate-blink-cursor: blink-cursor 0.8s step-end infinite;
+  --animate-scroll-wheel: scroll-wheel 2s ease infinite;
+  --animate-icon-hint: icon-hint 1.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  --animate-fade-up: fade-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes blink-cursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll-wheel {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes icon-hint {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  9% {
+    transform: scale(1.12);
+  }
+  18% {
+    transform: scale(1.03);
+  }
+  30% {
+    transform: scale(1.3);
+  }
+  42% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer base {
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  summary,
+  label[for] {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,26 @@
+name: prod
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: prod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: ./.github/workflows/quality.yml
+
+  deploy:
+    needs: quality
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: prod
+    permissions:
+      contents: read
+      id-token: write

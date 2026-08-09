@@ -1,0 +1,110 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: dev or prod
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: vars.DEPLOY_ENABLED != 'false'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check the deploy variables are set
+        run: |
+          missing=""
+          for v in AWS_REGION AWS_DEPLOY_ROLE_ARN API_BASE_URL S3_BUCKET S3_SHELL_PREFIX S3_BUNDLE_PREFIX CLOUDFRONT_DISTRIBUTION_ID SITE_URL; do
+            eval "value=\${$v:-}"
+            [ -z "$value" ] && missing="$missing $v"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Environment variables not set for ${{ inputs.environment }}:$missing"
+            echo "Settings -> Environments -> ${{ inputs.environment }} -> Variables" >&2
+            exit 1
+          fi
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          AWS_DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+          S3_SHELL_PREFIX: ${{ vars.S3_SHELL_PREFIX }}
+          S3_BUNDLE_PREFIX: ${{ vars.S3_BUNDLE_PREFIX }}
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+          SITE_URL: ${{ vars.SITE_URL }}
+
+      - name: Build for ${{ inputs.environment }}
+        env:
+          VITE_API_BASE_URL: ${{ vars.API_BASE_URL }}
+          VITE_ASSETS_BASE_URL: ${{ vars.SITE_URL }}
+          VITE_CONSOLE_URL: ${{ vars.SITE_URL }}
+          VITE_PREVIEW_ORIGINS: ${{ vars.SITE_URL }}
+        run: npm run build -- --mode ${{ inputs.environment }}
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Upload the fingerprinted bundle
+        env:
+          BUNDLE: s3://${{ vars.S3_BUCKET }}/${{ vars.S3_BUNDLE_PREFIX }}
+        run: |
+          aws s3 sync dist/ "$BUNDLE/" --delete \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "*.html" --exclude "files/*" --exclude "imgs/*"
+
+      - name: Upload the shells uncached
+        env:
+          BUCKET: s3://${{ vars.S3_BUCKET }}
+          SHELL_PREFIX: ${{ vars.S3_SHELL_PREFIX }}
+          BUNDLE_PREFIX: ${{ vars.S3_BUNDLE_PREFIX }}
+        run: |
+          for target in "$SHELL_PREFIX/index.html" "$BUNDLE_PREFIX/preview.html"; do
+            source="dist/$(basename "$target")"
+            aws s3 cp "$source" "$BUCKET/$target" \
+              --cache-control "public,max-age=0,must-revalidate" \
+              --content-type "text/html; charset=utf-8"
+          done
+
+      - name: Invalidate the edge cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*" >/dev/null
+
+      - name: Smoke test the portfolio route
+        env:
+          URL: ${{ vars.SITE_URL }}/fol/
+          BUNDLE_PREFIX: ${{ vars.S3_BUNDLE_PREFIX }}
+        run: |
+          for i in $(seq 1 10); do
+            body=$(curl -sf "$URL" || true)
+            case "$body" in
+              *"/$BUNDLE_PREFIX/assets/"*)
+                echo "/fol/ serves the portfolio shell"
+                exit 0
+                ;;
+            esac
+            sleep 10
+          done
+          echo "/fol/ never served the portfolio shell" >&2
+          exit 1
