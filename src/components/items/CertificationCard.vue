@@ -15,7 +15,7 @@
         <time
           v-if="item.date"
           class="hidden max-900:inline shrink-0 font-mono text-[0.68rem] text-ink-soft opacity-70 whitespace-nowrap"
-          >{{ item.date }}</time
+          >{{ shownDate }}</time
         >
       </div>
     </div>
@@ -23,7 +23,7 @@
       <time
         v-if="item.date"
         class="max-900:hidden font-mono text-[0.68rem] text-ink-soft opacity-70 whitespace-nowrap"
-        >{{ item.date }}</time
+        >{{ shownDate }}</time
       >
       <a
         v-if="item.doc"
@@ -31,7 +31,7 @@
         target="_blank"
         rel="noopener noreferrer"
         class="inline-flex items-center text-gold opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 leading-none animate-icon-hint"
-        title="View certificate"
+        :title="a11y.viewCertificate"
       >
         <Paperclip :size="15" />
       </a>
@@ -41,9 +41,16 @@
 
 <script setup lang="ts">
 import { Paperclip } from '@lucide/vue'
+import { computed } from 'vue'
 import { docUrl } from '@/utils/docs'
+import { formatMonthShort } from '@/utils/period'
+import { useActiveLang } from '@/i18n'
 import { icons } from '@/utils/icons'
 import type { ApiCertification } from '@/types/api'
+import { useA11y } from '@/i18n'
 
-defineProps<{ item: ApiCertification }>()
+const props = defineProps<{ item: ApiCertification }>()
+const a11y = useA11y()
+const activeLang = useActiveLang()
+const shownDate = computed(() => formatMonthShort(props.item.date, activeLang.value))
 </script>

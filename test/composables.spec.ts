@@ -11,7 +11,8 @@ import { messagesFor } from '@/i18n/messages'
 const project: ApiProject = {
   id: 'p1',
   order: 0,
-  period: '2025',
+  startDate: '2025-01',
+  endDate: null,
   badge: 'Hybrid RAG',
   title: 'CVision',
   desc: 'A thing',

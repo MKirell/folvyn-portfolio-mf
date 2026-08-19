@@ -6,8 +6,9 @@ import { useLanguage } from '@/composables/useLanguage'
 import { useModal } from '@/composables/useModal'
 import { fixtures } from './setup'
 import { messagesFor } from '@/i18n/messages'
+import { levelLabel } from '@/utils/vocabularies'
 import { deriveStats } from '@/utils/stats'
-import { linkedinHandle } from '@/utils/person'
+import { languageName, linkedinHandle } from '@/utils/person'
 
 import App from '@/App.vue'
 import AppNav from '@/components/layout/AppNav.vue'
@@ -62,14 +63,8 @@ describe('components', () => {
     it('offers a switch for every supported language', async () => {
       const wrapper = render(AppNav)
 
-      for (const locale of fixtures.en.availableLangs.map(
-        (l: { code: string; label: string; flagCode: string }) => ({
-          lang: l.code,
-          label: l.label,
-          flagCode: l.flagCode,
-        }),
-      )) {
-        expect(wrapper.html()).toContain(locale.label)
+      for (const locale of fixtures.en.availableLangs.map((l: { code: string }) => l.code)) {
+        expect(wrapper.html()).toContain(languageName(locale, 'en'))
       }
     })
 
@@ -104,14 +99,6 @@ describe('components', () => {
     it('renders the role card', async () => {
       expect(render(HeroSection).text()).toContain(fixtures.en.person.headline)
     })
-
-    it('lists the highlighted skills', async () => {
-      const text = render(HeroSection).text()
-
-      for (const skill of fixtures.en.profile.highlights) {
-        expect(text).toContain(skill)
-      }
-    })
   })
 
   describe('AboutSection', () => {
@@ -136,8 +123,8 @@ describe('components', () => {
 
       expect(text).toContain(messagesFor('en').labels.spokenLanguages)
       for (const language of fixtures.en.education.spokenLanguages) {
-        expect(text).toContain(language.name)
-        expect(text).toContain(language.level)
+        expect(text).toContain(languageName(language.code, 'en'))
+        expect(text).toContain(levelLabel(language.level, 'en'))
       }
     })
   })

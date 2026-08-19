@@ -73,7 +73,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center text-gold -mt-px opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 shrink-0 animate-icon-hint"
-                    title="View on LinkedIn"
+                    :title="a11y.viewLinkedin"
                   >
                     <svg
                       viewBox="0 0 24 24"
@@ -100,7 +100,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center text-gold opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 leading-none animate-icon-hint"
-                    title="View attestation"
+                    :title="a11y.viewAttestation"
                   >
                     <Paperclip :size="15" />
                   </a>
@@ -111,7 +111,7 @@
               >
                 {{ row.job.role }}
                 <span
-                  v-if="row.job.current"
+                  v-if="!row.job.endDate"
                   class="font-mono text-[0.64rem] font-medium bg-sage/[0.12] border border-[rgba(110,127,92,0.3)] text-sage rounded-full px-[11px] py-[3px] tracking-[0.05em] uppercase"
                   >{{ t.labels.currentRole }}</span
                 >
@@ -124,7 +124,7 @@
                   v-html="boldify(bullet)"
                 ></li>
               </ul>
-              <ul class="flex flex-wrap gap-[7px]" aria-label="Technologies used">
+              <ul class="flex flex-wrap gap-[7px]" :aria-label="a11y.technologiesUsed">
                 <li
                   v-for="tag in row.job.tags"
                   :key="tag"
@@ -161,7 +161,7 @@
                 >{{ row.job.role }}</span
               >
               <time
-                class="shrink-0 font-mono text-[0.68rem] max-700:text-[0.63rem] text-ink-soft opacity-70 max-700:col-start-2 max-700:row-start-1"
+                class="shrink-0 text-[0.75rem] max-700:text-[0.68rem] text-ink-soft opacity-70 max-700:col-start-2 max-700:row-start-1"
               >
                 <span
                   v-for="(seg, si) in periodSegments(period(row.job))"
@@ -253,11 +253,12 @@ import { docUrl } from '@/utils/docs'
 import { Paperclip, Plus, Minus, Briefcase, ChevronDown, ChevronUp, Layers } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
-import { useActiveLang, useMessages } from '@/i18n'
+import { useActiveLang, useMessages, useA11y } from '@/i18n'
 import { formatPeriod } from '@/utils/period'
 import { EXPERIENCE_VISIBLE } from '@/config/pagination'
 import type { ApiExperience } from '@/types/api'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const t = useMessages()
 const activeLang = useActiveLang()

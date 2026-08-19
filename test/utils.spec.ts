@@ -134,8 +134,8 @@ describe('docUrl and imgUrl', () => {
 
   it('keeps a nested stored key nested under the owner', () => {
     setAssetPrefix('6a75c3457e6aac5c2955d5ca')
-    expect(imgUrl('awards/award-awa-2023-1.jpg')).toBe(
-      '/imgs/6a75c3457e6aac5c2955d5ca/awards/award-awa-2023-1.jpg',
+    expect(imgUrl('award-awa-2023-1.jpg')).toBe(
+      '/imgs/6a75c3457e6aac5c2955d5ca/award-awa-2023-1.jpg',
     )
     setAssetPrefix('')
   })

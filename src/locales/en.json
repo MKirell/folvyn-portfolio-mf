@@ -1,0 +1,245 @@
+{
+  "nav": {
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "skills": "Skills",
+    "education": "Education",
+    "achievements": "Achievements",
+    "contact": "Contact"
+  },
+  "headings": {
+    "about": "Who am I?",
+    "experience": "Where have I worked?",
+    "projects": "What have I built?",
+    "skills": "What can I do?",
+    "education": "What did I study?",
+    "achievements": "What have I achieved?",
+    "contact": "How to reach me?"
+  },
+  "consent": {
+    "title": "Count me across visits?",
+    "body": "Measurement here never identifies you. Saying yes stores one identifier on this device so return visits can be told apart from first ones. Nothing is shared, and you can change your mind at any time.",
+    "accept": "Count return visits",
+    "refuse": "Stay anonymous",
+    "note": "no ads, no third party",
+    "change": "Measurement choice"
+  },
+  "labels": {
+    "currentRole": "Ongoing",
+    "showMore": "Show earlier experience",
+    "showLess": "Show less",
+    "earlierRoles": "earlier roles",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "degrees": "Degrees",
+    "certifications": "Certifications",
+    "spokenLanguages": "Languages",
+    "volunteering": "Volunteering",
+    "awards": "Awards",
+    "email": "Email",
+    "phone": "Phone",
+    "linkedin": "LinkedIn",
+    "location": "Location",
+    "contactCta": "Send me a message →",
+    "contactBlurbWorking": "Currently working as a **{role}** at **{org}**. Open to new opportunities and conversations.",
+    "contactBlurbRole": "Currently working as a **{role}**. Open to new opportunities and conversations.",
+    "contactBlurbPlain": "Open to new opportunities and conversations."
+  },
+  "hero": {
+    "cta": {
+      "projects": "View my projects",
+      "contact": "Get in touch"
+    },
+    "card": {
+      "headline": "headline",
+      "affiliation": "affiliation",
+      "location": "location",
+      "languages": "languages"
+    }
+  },
+  "stats": {
+    "experience": "years of experience",
+    "projects": "personal projects",
+    "certifications": "tech certifications",
+    "awards": "competition awards"
+  },
+  "period": {
+    "present": "Present",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "years": "years"
+  },
+  "footer": "© {year} {brand} · All rights reserved",
+  "shell": {
+    "promptUser": "guest",
+    "promptHost": "folvyn",
+    "placeholder": "type 'help' to get started…",
+    "welcome": ["FolvynOS [Version 26.07.1]", "Type 'help' to see available commands.", ""],
+    "helpIntro": "Available commands:",
+    "helpItems": [
+      {
+        "cmd": "help",
+        "desc": "show this list"
+      },
+      {
+        "cmd": "about",
+        "desc": "who I am"
+      },
+      {
+        "cmd": "whoami",
+        "desc": "quick identity check"
+      },
+      {
+        "cmd": "ls [dir]",
+        "desc": "list sections / files"
+      },
+      {
+        "cmd": "cat <file>",
+        "desc": "print a file's contents"
+      },
+      {
+        "cmd": "skills",
+        "desc": "technical skills"
+      },
+      {
+        "cmd": "experience",
+        "desc": "work history"
+      },
+      {
+        "cmd": "projects",
+        "desc": "featured projects"
+      },
+      {
+        "cmd": "education",
+        "desc": "degrees & certifications"
+      },
+      {
+        "cmd": "achievements",
+        "desc": "awards & volunteering"
+      },
+      {
+        "cmd": "contact",
+        "desc": "how to reach me"
+      },
+      {
+        "cmd": "resume",
+        "desc": "download my CV"
+      },
+      {
+        "cmd": "github",
+        "desc": "open my GitHub"
+      },
+      {
+        "cmd": "linkedin",
+        "desc": "open my LinkedIn"
+      },
+      {
+        "cmd": "email",
+        "desc": "compose an email"
+      },
+      {
+        "cmd": "cd <section>",
+        "desc": "scroll the page there"
+      },
+      {
+        "cmd": "lang <code>",
+        "desc": "switch language"
+      },
+      {
+        "cmd": "neofetch",
+        "desc": "system info, my way"
+      },
+      {
+        "cmd": "history",
+        "desc": "past commands"
+      },
+      {
+        "cmd": "clear",
+        "desc": "clear the screen"
+      },
+      {
+        "cmd": "man <cmd>",
+        "desc": "manual for a command"
+      }
+    ],
+    "helpFooter": "Tip: ↑ / ↓ browse history, Tab to autocomplete.",
+    "messages": {
+      "notFound": "command not found: {cmd}",
+      "tryHelp": "Type 'help' to see available commands.",
+      "catNotFound": "cat: {name}: No such file or directory",
+      "catUsage": "usage: cat <file>",
+      "sudoDenied": "guest is not in the sudoers file. This incident will be reported. (not really — try 'contact' for real access 😉)",
+      "sudoSandwich": "Okay. 🥪",
+      "sudoRm": "Nice try. This portfolio has better backups than that. 😏",
+      "slJoke": "🚂💨 Choo-choo! (You meant 'ls', right?)",
+      "dirJoke": "This isn't Windows 😉 — try 'ls'.",
+      "exitMsg": "There's no escaping this terminal — but 'Esc' will blur the prompt if you need a breather.",
+      "cdUsage": "usage: cd <section> — try one of: {sections}",
+      "cdUnknown": "cd: {name}: No such section. Try one of: {sections}",
+      "cdNavigating": "Navigating to #{section}…",
+      "cdSections": "hero, about, experience, projects, skills, education, achievements, contact",
+      "langSwitched": "Language switched to {lang}.",
+      "langUnknown": "Unknown language '{code}'. Try: {codes}",
+      "resumeOpening": "Opening résumé ({file})…",
+      "linkOpening": "Opening {url} in a new tab…",
+      "emailOpening": "Opening mail client…",
+      "manUnknown": "No manual entry for {cmd}",
+      "manUsage": "usage: man <cmd>",
+      "historyEmpty": "No command history yet.",
+      "whoamiRole": "You're looking at the terminal of"
+    }
+  },
+  "a11y": {
+    "skipToMain": "Skip to main content",
+    "loadFailed": "This portfolio could not be loaded.",
+    "retry": "Try again",
+    "loading": "Loading",
+    "waitingEditor": "Waiting for the editor…",
+    "viewCertificate": "View certificate",
+    "siteFooter": "Site footer",
+    "footerLinks": "Footer links",
+    "mainNavigation": "Main navigation",
+    "languageProficiency": "Language proficiency",
+    "viewLinkedin": "View on LinkedIn",
+    "viewAttestation": "View attestation",
+    "viewPhotos": "View photos",
+    "viewDocument": "View document",
+    "close": "Close",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "viewDiploma": "View diploma",
+    "technologiesUsed": "Technologies used",
+    "linkedinProfile": "LinkedIn profile",
+    "sendEmail": "Send email",
+    "downloadResume": "Download Resume / CV",
+    "downloadCv": "Download CV",
+    "terminalInput": "Portfolio terminal command input",
+    "projectList": "Project list",
+    "viewGithub": "View on GitHub",
+    "viewFullDetails": "View full details",
+    "viewFullProject": "View full project details",
+    "clickFullDetails": "Click to view full details",
+    "skillCategories": "Skill categories",
+    "technologies": "Technologies",
+    "switchLanguage": "Language: {current}. Switch to {next}"
+  },
+  "vocabularies": {
+    "honors": {
+      "pass": "Pass",
+      "satisfactory": "Satisfactory",
+      "good": "Good",
+      "very-good": "Very good",
+      "excellent": "Excellent"
+    },
+    "levels": {
+      "a1": "A1 · Beginner",
+      "a2": "A2 · Elementary",
+      "b1": "B1 · Intermediate",
+      "b2": "B2 · Fluent",
+      "c1": "C1 · Advanced",
+      "c2": "C2 · Proficient"
+    }
+  }
+}

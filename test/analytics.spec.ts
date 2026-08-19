@@ -65,7 +65,7 @@ describe('collector activation', () => {
 
     expect(useAnalytics().isEnabled()).toBe(true)
     expect(first.events[0]).toMatchObject({ type: 'session', lang: 'en' })
-    expect(first.slug).toBe('mohamed-khalil-zrelly')
+    expect(first.slug).toBe('ada-lovelace')
     expect(first.sessionId).toMatch(/[0-9a-f-]{8}/)
   })
 
@@ -217,31 +217,31 @@ describe('click classification', () => {
   }
 
   it('records a document open by filename', async () => {
-    click('<a href="/files/resume_en_mkzrelly.pdf#view=FitV">CV</a>')
+    click('<a href="/files/resume_en_ada-lovelace.pdf#view=FitV">CV</a>')
     const events = (await drain()).flatMap((entry) => entry.events)
 
     expect(events).toContainEqual(
-      expect.objectContaining({ type: 'doc', target: 'resume_en_mkzrelly.pdf' }),
+      expect.objectContaining({ type: 'doc', target: 'resume_en_ada-lovelace.pdf' }),
     )
   })
 
   it('records contact channels by name, never by address', async () => {
-    click('<a href="mailto:hello@mkirell.com">Mail</a>')
+    click('<a href="mailto:ada.lovelace@example.com">Mail</a>')
     const events = (await drain()).flatMap((entry) => entry.events)
 
     expect(events).toContainEqual(expect.objectContaining({ type: 'contact', target: 'email' }))
-    expect(JSON.stringify(events)).not.toContain('hello@mkirell.com')
+    expect(JSON.stringify(events)).not.toContain('ada.lovelace@example.com')
   })
 
   it('records a phone click as a channel', async () => {
-    click('<a href="tel:+21612345678">Call</a>')
+    click('<a href="tel:+33612345678">Call</a>')
     const events = (await drain()).flatMap((entry) => entry.events)
 
     expect(events).toContainEqual(expect.objectContaining({ type: 'contact', target: 'phone' }))
   })
 
   it('separates known social profiles from generic outbound links', async () => {
-    click('<a href="https://github.com/MKirell">Code</a>')
+    click('<a href="https://github.com/adalovelace">Code</a>')
     click('<a href="https://example.org/post">Post</a>')
     const events = (await drain()).flatMap((entry) => entry.events)
 

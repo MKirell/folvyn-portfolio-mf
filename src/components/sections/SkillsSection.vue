@@ -40,7 +40,7 @@
         :key="paged.page.value"
         aria-live="polite"
         class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] max-700:grid-cols-1 gap-5"
-        aria-label="Skill categories"
+        :aria-label="a11y.skillCategories"
       >
         <li
           v-for="cat in paged.items.value"
@@ -55,7 +55,7 @@
             <component :is="icons[cat.icon]" :size="19" :stroke-width="1.8" />
           </div>
           <h3 class="font-disp text-base font-semibold text-ink mb-4">{{ cat.title }}</h3>
-          <ul class="flex flex-wrap gap-[7px]" aria-label="Technologies">
+          <ul class="flex flex-wrap gap-[7px]" :aria-label="a11y.technologies">
             <li
               v-for="tag in cat.tags"
               :key="tag"
@@ -79,7 +79,7 @@ defineProps<{ tinted?: boolean }>()
 
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
-import { useMessages } from '@/i18n'
+import { useMessages, useA11y } from '@/i18n'
 import type { Component } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { usePagedList } from '@/composables/usePagedList'
@@ -87,6 +87,7 @@ import PageControl from '@/components/items/PageControl.vue'
 import { PAGE_SIZE } from '@/config/pagination'
 import { Brain, Bot, Activity, Database, Globe, Cloud, Code2, Languages, Wrench } from '@lucide/vue'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const t = useMessages()
 const { skillCategories } = storeToRefs(store)

@@ -91,6 +91,31 @@ jobs:
             --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
             --paths "/*" >/dev/null
 
+      - name: Build the renderer
+        run: npm run build:prerender
+
+      - name: Ship the renderer
+        if: vars.PRERENDER_FUNCTION_NAME != ''
+        env:
+          FUNCTION: ${{ vars.PRERENDER_FUNCTION_NAME }}
+        run: |
+          (cd dist-prerender && zip -qr ../prerender.zip .)
+          aws lambda update-function-code \
+            --function-name "$FUNCTION" \
+            --zip-file fileb://prerender.zip \
+            --publish >/dev/null
+          aws lambda wait function-updated --function-name "$FUNCTION"
+
+      - name: Ask the renderer for every published portfolio
+        if: vars.PRERENDER_FUNCTION_NAME != ''
+        env:
+          FUNCTION: ${{ vars.PRERENDER_FUNCTION_NAME }}
+        run: |
+          aws lambda invoke \
+            --function-name "$FUNCTION" \
+            --invocation-type Event \
+            --payload '{}' /dev/null >/dev/null
+
       - name: Smoke test the portfolio route
         env:
           URL: ${{ vars.SITE_URL }}/fol/

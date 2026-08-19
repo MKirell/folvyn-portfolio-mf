@@ -9,6 +9,7 @@ export interface ShellHelpItem {
 }
 
 export interface Messages {
+  a11y: Record<string, string>
   nav: Record<SectionKey, string>
   headings: Record<SectionKey, string>
   consent: {
@@ -19,8 +20,15 @@ export interface Messages {
     note: string
     change: string
   }
+  vocabularies: {
+    honors: Record<string, string>
+    levels: Record<string, string>
+  }
   labels: {
     currentRole: string
+    contactBlurbWorking: string
+    contactBlurbRole: string
+    contactBlurbPlain: string
     showMore: string
     showLess: string
     earlierRoles: string
@@ -60,4 +68,8 @@ export interface Messages {
     helpFooter: string
     messages: Record<string, string>
   }
+}
+
+declare module 'vue-i18n' {
+  export interface DefineLocaleMessage extends Messages {}
 }

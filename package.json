@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --mode local",
+    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build --mode prod",
     "preview": "vite preview --mode prod",
     "typecheck": "vue-tsc --noEmit",
@@ -18,15 +18,21 @@
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "build:dev": "vue-tsc --noEmit && vite build --mode dev"
+    "build:dev": "vue-tsc --noEmit && vite build --mode dev",
+    "build:prerender": "node prerender/build.mjs"
   },
   "dependencies": {
     "@lucide/vue": "^1.24.0",
+    "@resvg/resvg-wasm": "^2.6.2",
     "country-flag-icons": "^1.6.20",
     "pinia": "^4.0.2",
-    "vue": "^3.5.13"
+    "satori": "^0.29.0",
+    "vue": "^3.5.13",
+    "vue-i18n": "^11.4.8"
   },
   "devDependencies": {
+    "@aws-sdk/client-cloudfront": "^3.1106.0",
+    "@aws-sdk/client-s3": "^3.1106.0",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.3",

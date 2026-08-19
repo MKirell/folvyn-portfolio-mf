@@ -3,13 +3,12 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import seoPrerender from './vite-plugins/seo'
 
 const rootDir = fileURLToPath(new URL('.', import.meta.url))
 
 export default defineConfig(({ mode }) => ({
-  base: mode === 'local' || mode === 'development' ? '/' : '/app/portfolio/',
-  plugins: [vue(), tailwindcss(), seoPrerender()],
+  base: mode === 'development' ? '/' : '/app/portfolio/',
+  plugins: [vue(), tailwindcss()],
   resolve: {
     alias: { '@': resolve(rootDir, 'src') },
   },

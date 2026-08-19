@@ -3,7 +3,7 @@
     <a
       href="#main-content"
       class="absolute -top-249.75 left-0 bg-accent text-white px-5 py-2.5 text-sm font-semibold z-9999 rounded-bl-[14px] focus:top-0"
-      >Skip to main content</a
+      >{{ a11y.skipToMain }}</a
     >
     <AppNav />
     <main id="main-content">
@@ -37,19 +37,19 @@
 
   <div v-else-if="store.error" class="min-h-screen grid place-items-center px-6 text-center">
     <div>
-      <p class="text-lg font-semibold">This portfolio could not be loaded.</p>
+      <p class="text-lg font-semibold">{{ a11y.loadFailed }}</p>
       <p class="mt-2 text-sm opacity-70">{{ store.error }}</p>
       <button
         class="mt-6 bg-accent text-white px-5 py-2.5 text-sm font-semibold rounded-lg"
         @click="store.load(lang || undefined)"
       >
-        Try again
+        {{ a11y.retry }}
       </button>
     </div>
   </div>
 
   <div v-else class="min-h-screen grid place-items-center" role="status" aria-live="polite">
-    <span class="sr-only">Loading</span>
+    <span class="sr-only">{{ a11y.loading }}</span>
     <span
       class="h-8 w-8 rounded-full border-2 border-current border-t-transparent animate-spin opacity-40"
     />
@@ -75,12 +75,15 @@ import { usePortfolioStore } from '@/stores/portfolio'
 import { startAnalytics } from '@/composables/useAnalytics'
 import { initConsent, type ConsentMode } from '@/composables/useConsent'
 import { useSyncedAnimations } from '@/composables/useSyncedAnimations'
+import { syncUiLang, useA11y } from '@/i18n'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const origin = typeof location === 'undefined' ? 'mkirell.com' : location.host
 const { lang } = useLanguage()
 
 useSyncedAnimations()
+syncUiLang()
 
 onMounted(async () => {
   await store.load(lang.value || undefined)

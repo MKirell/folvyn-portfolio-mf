@@ -119,9 +119,9 @@ describe('useShell', () => {
 
     it('prints a single job by slug', async () => {
       const shell = createShell()
-      const output = shell.text(shell.run('experience credit-agricole-personal-finance-mobility'))
+      const output = shell.text(shell.run('experience acme-corp-personal-finance-mobility'))
 
-      expect(output).toContain('Crédit Agricole Personal Finance & Mobility')
+      expect(output).toContain('Acme Corp Personal Finance & Mobility')
     })
 
     it('reports an unknown job slug as a missing file', async () => {

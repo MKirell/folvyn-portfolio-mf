@@ -3,7 +3,7 @@
     <component :is="section" v-if="section" />
     <p v-else class="font-mono text-[0.8rem] text-muted">No preview for "{{ requested }}".</p>
   </main>
-  <p v-else class="font-mono text-[0.8rem] text-muted">Waiting for the editor…</p>
+  <p v-else class="font-mono text-[0.8rem] text-muted">{{ a11y.waitingEditor }}</p>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +19,7 @@ import HeroSection from '@/components/sections/HeroSection.vue'
 import ProjectsSection from '@/components/sections/ProjectsSection.vue'
 import SkillsSection from '@/components/sections/SkillsSection.vue'
 import type { ApiPortfolio } from '@/types/api'
+import { useA11y } from '@/i18n'
 
 const SECTIONS: Record<string, Component> = {
   person: AboutSection,
@@ -34,6 +35,7 @@ const SECTIONS: Record<string, Component> = {
   award: AchievementsSection,
 }
 
+const a11y = useA11y()
 const MESSAGE = 'folvyn:preview'
 
 const store = usePortfolioStore()

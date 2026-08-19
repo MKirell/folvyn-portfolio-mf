@@ -1,4 +1,6 @@
 import { CALLING_CODES } from './dial-codes'
+import { fill } from '../i18n/messages'
+import type { Messages } from '../i18n/types'
 import type { ApiPerson } from '../types/api'
 
 export function fullName(person: Pick<ApiPerson, 'givenName' | 'familyName'>): string {
@@ -29,6 +31,16 @@ export function linkedinHandle(url: string): string {
   }
 }
 
+export function languageName(code: string | null, lang: string): string {
+  if (!code) return ''
+  try {
+    const name = new Intl.DisplayNames([lang], { type: 'language' }).of(code) ?? code
+    return name.charAt(0).toLocaleUpperCase(lang) + name.slice(1)
+  } catch {
+    return code
+  }
+}
+
 export function countryName(code: string | null, lang: string): string {
   if (!code) return ''
   try {
@@ -41,4 +53,20 @@ export function countryName(code: string | null, lang: string): string {
 export function mapsUrl(locality: string, countryCode: string | null, lang = 'en'): string {
   const query = [locality, countryName(countryCode, lang)].filter(Boolean).join(', ')
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+}
+
+export function contactBlurb(
+  person: Pick<ApiPerson, 'headline' | 'affiliation'>,
+  messages: Messages,
+): string {
+  const role = person.headline?.trim()
+  const org = person.affiliation?.trim()
+
+  if (role && org) {
+    return fill(messages.labels.contactBlurbWorking, { role, org })
+  }
+  if (role) {
+    return fill(messages.labels.contactBlurbRole, { role })
+  }
+  return messages.labels.contactBlurbPlain
 }

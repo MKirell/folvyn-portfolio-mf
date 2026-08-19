@@ -28,7 +28,7 @@
       <p
         v-reveal
         class="text-ink-soft text-[1.06rem] max-w-[580px] mx-auto mb-[52px] leading-[1.85]"
-        v-html="boldify(person.contactDesc)"
+        v-html="boldify(blurb)"
       ></p>
 
       <address
@@ -142,7 +142,14 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useActiveLang, useMessages } from '@/i18n'
-import { countryName, displayPhone, fullName, linkedinHandle, mapsUrl } from '@/utils/person'
+import {
+  contactBlurb,
+  countryName,
+  displayPhone,
+  fullName,
+  linkedinHandle,
+  mapsUrl,
+} from '@/utils/person'
 import { boldify } from '@/utils/text'
 
 const store = usePortfolioStore()
@@ -151,6 +158,7 @@ const activeLang = useActiveLang()
 const { person } = storeToRefs(store)
 
 const name = computed(() => fullName(person.value))
+const blurb = computed(() => contactBlurb(person.value, t.value))
 const mapLink = computed(() => mapsUrl(person.value.city, person.value.country, activeLang.value))
 const country = computed(() => countryName(person.value.country, activeLang.value))
 </script>

@@ -1,6 +1,5 @@
 export interface ApiLocale {
   code: string
-  label: string
   flagCode: string
 }
 
@@ -19,24 +18,21 @@ export interface ApiPerson {
   photo: string
   headline: string
   aboutParagraphs: string[]
-  contactDesc: string
   resume: string | null
 }
 
 export interface ApiProfile {
   subtitles: string[]
   tagline: string
-  highlights: string[]
-  highlightFocus: string[]
 }
 
 export interface ApiExperience {
   id: string
   order: number
-  current: boolean
   startDate: string
   endDate: string | null
   country: string | null
+  city: string | null
   company: string
   tags: string[]
   doc: string | null
@@ -48,10 +44,11 @@ export interface ApiExperience {
 export interface ApiProject {
   id: string
   order: number
+  startDate: string
+  endDate: string | null
   title: string
   tags: string[]
   link: string | null
-  period: string
   badge: string
   desc: string
 }
@@ -60,21 +57,23 @@ export interface ApiSkillCategory {
   id: string
   order: number
   icon: string
-  accentTags: string[]
   tags: string[]
+  accentTags: string[]
   title: string
 }
 
 export interface ApiDegree {
   id: string
   order: number
-  years: string
+  startDate: string
+  endDate: string | null
+  school: string | null
+  country: string | null
+  city: string | null
+  honors: string | null
   doc: string | null
   link: string | null
   title: string
-  school: string | null
-  location: string | null
-  mention: string | null
 }
 
 export interface ApiCertification {
@@ -90,21 +89,22 @@ export interface ApiCertification {
 export interface ApiSpokenLanguage {
   id: string
   order: number
-  flagCode: string
+  code: string
+  country: string
+  level: string
   pct: number
   doc: string | null
-  name: string
-  level: string
 }
 
 export interface ApiVolunteering {
   id: string
   order: number
+  startDate: string
+  endDate: string | null
   org: string
   doc: string | null
   link: string | null
   role: string
-  period: string
   desc: string
 }
 
@@ -112,12 +112,11 @@ export interface ApiAward {
   id: string
   order: number
   icon: string
-  flagCode: string | null
-  images: string[]
-  doc: string | null
-  title: string
-  place: string | null
+  country: string | null
+  city: string | null
   date: string | null
+  images: string[]
+  title: string
 }
 
 export interface ApiPortfolio {

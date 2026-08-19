@@ -18,7 +18,7 @@ vi.mock('@/services/portfolio.api', () => ({
   fetchLanguages: vi.fn(() => Promise.resolve(fixtures.en.availableLangs)),
 }))
 
-window.history.replaceState({}, '', '/fol/mohamed-khalil-zrelly')
+window.history.replaceState({}, '', '/fol/ada-lovelace')
 
 const pinia = createPinia()
 setActivePinia(pinia)

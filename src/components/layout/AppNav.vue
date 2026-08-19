@@ -7,7 +7,7 @@
         ? 'h-16 max-700:h-14 before:bg-bg/82 before:backdrop-blur-[18px] before:border-b before:border-line/7'
         : 'h-[72px] max-700:h-14 before:bg-transparent before:border-b before:border-transparent'
     "
-    aria-label="Main navigation"
+    :aria-label="a11y.mainNavigation"
   >
     <a
       href="#main-content"
@@ -78,8 +78,9 @@
       >
         <button
           type="button"
-          :aria-label="`Language: ${activeLocale.label}. Switch to ${otherLocale.label}`"
-          :title="`Switch to ${otherLocale.label}`"
+          :aria-label="switchLabel"
+          data-language-switch
+          :title="localeName(otherLocale.code)"
           class="group relative inline-block shrink-0 cursor-pointer border-0 bg-transparent p-0 perspective-[600px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           @click="setLang(otherLocale.code)"
         >
@@ -97,7 +98,7 @@
                 class="inline-block h-[13px] w-[18px] shrink-0 rounded-[2px] bg-cover bg-center bg-no-repeat"
                 :style="{ backgroundImage: `url(&quot;${flagUrl(activeLocale.flagCode)}&quot;)` }"
               ></span>
-              {{ activeLocale.label }}
+              {{ activeLocale.code.toUpperCase() }}
             </span>
           </Transition>
         </button>
@@ -189,15 +190,17 @@ import {
   Moon,
 } from '@lucide/vue'
 import { useLanguage } from '@/composables/useLanguage'
+import { languageName } from '@/utils/person'
 import { useTheme } from '@/composables/useTheme'
 import { flagUrl } from '@/utils/flags'
 import { BRAND } from '@/brand'
 import { brandLogo } from '@/utils/logo'
-import { useMessages } from '@/i18n'
+import { fill, useMessages, useA11y } from '@/i18n'
 import { isPlainClick, navHeight, scrollToSection, sectionScrollTop } from '@/utils/scroll'
 import { usePortfolioStore } from '@/stores/portfolio'
 import type { SectionKey } from '@/utils/sections'
 
+const a11y = useA11y()
 const t = useMessages()
 
 const store = usePortfolioStore()
@@ -217,6 +220,17 @@ const sectionIcons: Record<string, Component> = {
 }
 
 const { lang, setLang, availableLangs } = useLanguage()
+
+function localeName(code: string): string {
+  return languageName(code, lang.value)
+}
+
+const switchLabel = computed(() =>
+  fill(a11y.value.switchLanguage, {
+    current: localeName(activeLocale.value.code),
+    next: localeName(otherLocale.value.code),
+  }),
+)
 const { theme, toggleTheme } = useTheme()
 const isLight = computed(() => theme.value === 'light')
 
@@ -224,7 +238,7 @@ const activeLangIndex = computed(() =>
   Math.max(
     0,
     availableLangs.value.findIndex(
-      (l: { code: string; label: string; flagCode: string }) => l.code === lang.value,
+      (l: { code: string; flagCode: string }) => l.code === lang.value,
     ),
   ),
 )

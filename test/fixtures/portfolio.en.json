@@ -3,62 +3,57 @@
   "availableLangs": [
     {
       "code": "en",
-      "label": "EN",
       "flagCode": "gb"
     },
     {
       "code": "fr",
-      "label": "FR",
       "flagCode": "fr"
     }
   ],
   "person": {
     "brand": "MKirell",
-    "familyName": "ZRELLY",
-    "github": "https://github.com/MKirell",
-    "givenName": "Mohamed Khalil",
-    "linkedin": "https://www.linkedin.com/in/mohamed-khalil-zrelly/",
+    "familyName": "Lovelace",
+    "github": "https://github.com/adalovelace",
+    "givenName": "Ada",
+    "linkedin": "https://www.linkedin.com/in/ada-lovelace/",
     "mapsUrl": "https://www.google.com/maps/place/Paris,+France",
-    "organizationEmail": "admin@mkirell.com",
+    "organizationEmail": "ada.lovelace@example.com",
     "phone": "+33758215856",
     "photo": "off-image.jpeg",
-    "professionalEmail": "mohamed.khalil.zrelly@gmail.com",
+    "professionalEmail": "ada.lovelace@example.com",
     "resumes": {
-      "en": "resume_en_mkzrelly.pdf",
-      "fr": "resume_fr_mkzrelly.pdf"
+      "en": "resume_en_ada-lovelace.pdf",
+      "fr": "resume_fr_ada-lovelace.pdf"
     },
     "url": "https://mkirell.com/",
-    "affiliation": "Crédit Agricole",
+    "affiliation": "Acme Corp",
     "id": "6a6e5b323d381ce7bc7062b1",
     "headline": "Generative AI Engineer",
-    "resume": "resume_en_mkzrelly.pdf",
+    "resume": "resume_en_ada-lovelace.pdf",
     "city": "Paris",
     "country": "FR",
     "aboutParagraphs": [
-      "I'm a Computer Science Engineering student at **Sup Galilée, Sorbonne Paris North University**, and a **Generative AI Engineer Apprentice at Crédit Agricole**, with a strong focus on **agentic AI systems**.",
+      "I'm a Computer Science student at **Example University**, and a **Backend Engineer at Acme Corp**, with a strong focus on **agentic AI systems**.",
       "My expertise is built on a solid foundation in **machine learning**, **deep learning**, and **natural language processing**, strengthened through internships and hands-on AI projects.",
-      "Beyond technology, I was involved with **Enactus** and **AIESEC** in social entrepreneurship and international exchange, which reflects the same curiosity and commitment I bring to every technical challenge."
-    ],
-    "contactDesc": "Currently working as a **Gen AI Engineer Apprentice at Crédit Agricole**. Feel free to reach out to discuss AI projects, collaborations, or just to connect."
+      "Beyond technology, I was involved with **Globex** and **Initech** in social entrepreneurship and international exchange, which reflects the same curiosity and commitment I bring to every technical challenge."
+    ]
   },
   "profile": {
     "subtitles": [
-      "Generative AI Engineer Apprentice",
+      "Backend Engineer",
       "Agentic Systems Architect",
       "RAG & LLM Specialist",
       "Multi-Agent Systems Builder"
     ],
-    "tagline": "Passionate about **Generative AI** and **Agentic Systems**, I build on solid machine learning foundations to engineer intelligent agents that reason, retrieve, and deliver real-world impact.",
-    "highlights": ["LangChain", "LangGraph", "RAG", "Multi-Agent", "PyTorch", "AWS"],
-    "highlightFocus": ["RAG"]
+    "tagline": "Passionate about **Generative AI** and **Agentic Systems**, I build on solid machine learning foundations to engineer intelligent agents that reason, retrieve, and deliver real-world impact."
   },
   "experiences": [
     {
       "order": 0,
-      "company": "Crédit Agricole Personal Finance & Mobility",
+      "company": "Acme Corp Personal Finance & Mobility",
       "current": true,
       "doc": null,
-      "link": "https://www.linkedin.com/company/credit-agricole-personal-finance-mobility/",
+      "link": "https://www.linkedin.com/company/acme-corp-personal-finance-mobility/",
       "tags": [
         "Agentic Workflows",
         "Advanced RAG",
@@ -70,14 +65,15 @@
         "Python/Streamlit"
       ],
       "id": "6a6e5b333d381ce7bc7062b8",
-      "role": "Generative AI Engineer Apprentice",
+      "role": "Backend Engineer",
       "bullets": [
         "Developed a declarative, config-driven microservice for **workflow management and orchestration**, making it easy to manage and execute complex AI workflows at scale.",
         "Built an automated **workflow evaluation engine** leveraging **LLM-as-a-judge** to assess outputs against custom metrics, with a **dashboard** to analyse workflow behaviour."
       ],
       "startDate": "2025-09",
       "endDate": null,
-      "country": "FR"
+      "country": "FR",
+      "city": "Tunis"
     },
     {
       "order": 1,
@@ -104,7 +100,8 @@
       ],
       "startDate": "2024-02",
       "endDate": "2024-06",
-      "country": "TN"
+      "country": "TN",
+      "city": "Tunis"
     },
     {
       "order": 2,
@@ -131,13 +128,14 @@
       ],
       "startDate": "2023-06",
       "endDate": "2023-08",
-      "country": "TN"
+      "country": "TN",
+      "city": "Tunis"
     }
   ],
   "projects": [
     {
       "order": 0,
-      "link": "https://github.com/MKirell/CVision",
+      "link": "https://github.com/adalovelace/CVision",
       "tags": [
         "Advanced RAG",
         "Re-Ranking",
@@ -151,13 +149,14 @@
       ],
       "title": "CVision",
       "id": "6a6e5b333d381ce7bc7062bb",
-      "period": "In Production — 2025",
       "badge": "Hybrid RAG",
-      "desc": "Created an intelligent **CV recommendation system** based on job description using **Retrieval-Augmented Generation (RAG)**, to optimise the selection and automatic ranking of the most relevant profiles."
+      "desc": "Created an intelligent **CV recommendation system** based on job description using **Retrieval-Augmented Generation (RAG)**, to optimise the selection and automatic ranking of the most relevant profiles.",
+      "startDate": "2025-01",
+      "endDate": null
     },
     {
       "order": 1,
-      "link": "https://github.com/MKirell/VERMail",
+      "link": "https://github.com/adalovelace/VERMail",
       "tags": [
         "BERT Fine-Tuning",
         "PyTorch",
@@ -171,13 +170,14 @@
       ],
       "title": "VERMail",
       "id": "6a6e5b333d381ce7bc7062bc",
-      "period": "In Production — 2024",
       "badge": "NLP · OCR",
-      "desc": "Developed an end-to-end **email intelligence platform** combining fine-tuned **BERT** for multi-class classification and **PaddleOCR** for accurate attachment parsing, with a **React** dashboard for real-time monitoring."
+      "desc": "Developed an end-to-end **email intelligence platform** combining fine-tuned **BERT** for multi-class classification and **PaddleOCR** for accurate attachment parsing, with a **React** dashboard for real-time monitoring.",
+      "startDate": "2025-01",
+      "endDate": null
     },
     {
       "order": 2,
-      "link": "https://github.com/MKirell/Slythera",
+      "link": "https://github.com/adalovelace/Slythera",
       "tags": [
         "Reinforcement Learning",
         "TensorFlow/Keras",
@@ -191,9 +191,10 @@
       ],
       "title": "Slythera",
       "id": "6a6e5b333d381ce7bc7062bd",
-      "period": "In Production — 2023",
       "badge": "Deep RL",
-      "desc": "Developed a **2D grid game** in **Pygame** featuring an AI agent trained from scratch with **Deep Q-Learning** to autonomously navigate obstacles and maximise its score in a dynamic, progressively challenging environment."
+      "desc": "Developed a **2D grid game** in **Pygame** featuring an AI agent trained from scratch with **Deep Q-Learning** to autonomously navigate obstacles and maximise its score in a dynamic, progressively challenging environment.",
+      "startDate": "2025-01",
+      "endDate": null
     },
     {
       "order": 3,
@@ -210,9 +211,10 @@
       ],
       "title": "AeroVI",
       "id": "6a6e5b333d381ce7bc7062be",
-      "period": "In Development ~ 2026",
       "badge": "Multimodal AI",
-      "desc": "Designing a **multimodal travel guide** that generates personalised travel itineraries, curated destination recommendations, and immersive visual content, covering the full journey from planning to discovery."
+      "desc": "Designing a **multimodal travel guide** that generates personalised travel itineraries, curated destination recommendations, and immersive visual content, covering the full journey from planning to discovery.",
+      "startDate": "2025-01",
+      "endDate": null
     },
     {
       "order": 4,
@@ -228,9 +230,10 @@
       ],
       "title": "PlanYU",
       "id": "6a6e5b333d381ce7bc7062bf",
-      "period": "In Development ~ 2026",
       "badge": "Agentic · PM",
-      "desc": "Designing a **generative project management platform** that produces complete project structures, tasks, schedules, and assignments, pairing team members to each task based on their skills and availability."
+      "desc": "Designing a **generative project management platform** that produces complete project structures, tasks, schedules, and assignments, pairing team members to each task based on their skills and availability.",
+      "startDate": "2025-01",
+      "endDate": null
     },
     {
       "order": 5,
@@ -250,9 +253,10 @@
       ],
       "title": "TwiXel",
       "id": "6a6e5b333d381ce7bc7062c0",
-      "period": "In Ideation ~ 2026",
       "badge": "Multi-Agent",
-      "desc": "Designing an intelligent **multi-agent system** for automated social listening on Twitter (now X), aimed at identifying emerging trends in real time and generating actionable marketing campaign ideas at scale."
+      "desc": "Designing an intelligent **multi-agent system** for automated social listening on Twitter (now X), aimed at identifying emerging trends in real time and generating actionable marketing campaign ideas at scale.",
+      "startDate": "2025-01",
+      "endDate": null
     }
   ],
   "skillCategories": [
@@ -327,34 +331,40 @@
         "order": 0,
         "doc": null,
         "link": "https://www.linkedin.com/school/université-sorbonne-paris-nord/",
-        "years": "2024 — 2027",
         "id": "6a6e5b333d381ce7bc7062c9",
         "title": "Engineering Degree in Computer Science",
-        "school": "Sup Galilée – Sorbonne Paris North University",
-        "location": "Villetaneuse, France",
-        "mention": null
+        "school": "Example University – Example University",
+        "startDate": "2021-09",
+        "endDate": "2024-06",
+        "country": "TN",
+        "city": "Tunis",
+        "honors": null
       },
       {
         "order": 1,
         "doc": "degree-bachelor-2024.pdf",
-        "link": "https://www.linkedin.com/school/university-of-tunis-el-manar/",
-        "years": "2021 — 2024",
+        "link": "https://www.linkedin.com/school/example-university/",
         "id": "6a6e5b333d381ce7bc7062ca",
         "title": "Bachelor's Degree in Computer Science",
-        "school": "ISI Ariana – University of Tunis El Manar",
-        "location": "Ariana, Tunisia",
-        "mention": "High Distinction ✦"
+        "school": "Institute of Technology – Example University",
+        "startDate": "2021-09",
+        "endDate": "2024-06",
+        "country": "TN",
+        "city": "Tunis",
+        "honors": "very-good"
       },
       {
         "order": 2,
         "doc": "degree-baccalaureate-2021.pdf",
         "link": null,
-        "years": "2021",
         "id": "6a6e5b333d381ce7bc7062cb",
         "title": "Baccalaureate Degree in Mathematics",
-        "school": "Ibn Rachik Ezzahra High School",
-        "location": "Ezzahra, Tunisia",
-        "mention": null
+        "school": "Example High School",
+        "startDate": "2021-09",
+        "endDate": "2024-06",
+        "country": "TN",
+        "city": "Tunis",
+        "honors": null
       }
     ],
     "certifications": [
@@ -365,7 +375,7 @@
         "issuer": "IBM (Coursera)",
         "title": "Build Multimodal Generative AI Applications",
         "id": "6a6e5b333d381ce7bc7062cc",
-        "date": "Jul 2026"
+        "date": "2026-07"
       },
       {
         "order": 1,
@@ -374,7 +384,7 @@
         "issuer": "IBM (Coursera)",
         "title": "Generative AI Advanced Fine-Tuning for LLMs",
         "id": "6a6e5b333d381ce7bc7062cd",
-        "date": "Jul 2026"
+        "date": "2026-07"
       },
       {
         "order": 2,
@@ -383,7 +393,7 @@
         "issuer": "Udemy",
         "title": "Spark and Python for Big Data with PySpark",
         "id": "6a6e5b333d381ce7bc7062ce",
-        "date": "Mar 2024"
+        "date": "2024-03"
       },
       {
         "order": 3,
@@ -392,7 +402,7 @@
         "issuer": "Udemy",
         "title": "Natural Language Processing with Python",
         "id": "6a6e5b333d381ce7bc7062cf",
-        "date": "Feb 2024"
+        "date": "2024-02"
       },
       {
         "order": 4,
@@ -401,7 +411,7 @@
         "issuer": "Microsoft Azure",
         "title": "Azure AI Fundamentals (AI-900)",
         "id": "6a6e5b333d381ce7bc7062d0",
-        "date": "Jan 2024"
+        "date": "2024-01"
       },
       {
         "order": 5,
@@ -410,36 +420,36 @@
         "issuer": "Microsoft Azure",
         "title": "Azure Data Fundamentals (DP-900)",
         "id": "6a6e5b333d381ce7bc7062d1",
-        "date": "Jan 2024"
+        "date": "2024-01"
       }
     ],
     "spokenLanguages": [
       {
         "order": 0,
         "doc": "certificate-english-toeic.pdf",
-        "flagCode": "gb",
         "pct": 80,
         "id": "6a6e5b343d381ce7bc7062d2",
-        "name": "English",
-        "level": "B2 · TOEIC"
+        "level": "b2",
+        "code": "en",
+        "country": "GB"
       },
       {
         "order": 1,
         "doc": "certificate-french-tcf.pdf",
-        "flagCode": "fr",
         "pct": 80,
         "id": "6a6e5b343d381ce7bc7062d3",
-        "name": "French",
-        "level": "B2 · TCF"
+        "level": "b2",
+        "code": "fr",
+        "country": "FR"
       },
       {
         "order": 2,
         "doc": null,
-        "flagCode": "tn",
         "pct": 100,
         "id": "6a6e5b343d381ce7bc7062d4",
-        "name": "Arabic",
-        "level": "Native"
+        "level": "c2",
+        "code": "ar",
+        "country": "TN"
       }
     ]
   },
@@ -447,79 +457,77 @@
     "volunteering": [
       {
         "order": 0,
-        "doc": "attestation-enactus-isi.pdf",
-        "link": "https://www.linkedin.com/company/enactus/",
-        "org": "Enactus",
+        "doc": "attestation-volunteering.pdf",
+        "link": "https://www.linkedin.com/company/globex/",
+        "org": "Globex",
         "id": "6a6e5b343d381ce7bc7062d5",
         "role": "Project Manager",
-        "period": "09/2021 — 08/2024 · 3 years",
-        "desc": "As Project Manager in Enactus's R&D unit, I led my team to the Ichmilni Race finals, presenting **AGRIVEST**, a peer-to-peer lending platform promoting digital inclusion for smallholder farmers in rural Tunisia."
+        "desc": "As Project Manager in Globex's R&D unit, I led my team to the Ichmilni Race finals, presenting **FARMLINK**, a peer-to-peer lending platform promoting digital inclusion for smallholder farmers in rural areas.",
+        "startDate": "2021-09",
+        "endDate": "2024-08"
       },
       {
         "order": 1,
         "doc": null,
-        "link": "https://www.linkedin.com/company/aiesec/",
-        "org": "AIESEC",
+        "link": "https://www.linkedin.com/company/initech/",
+        "org": "Initech",
         "id": "6a6e5b343d381ce7bc7062d6",
         "role": "Team Member",
-        "period": "02/2024 — 07/2024 · 6 months",
-        "desc": "As a Team Member in AIESEC's Incoming Global Talent unit, I negotiated partnerships with companies and educational institutions in Tunisia to secure internship opportunities for international exchange participants."
+        "desc": "As a Team Member in Initech's Incoming Global Talent unit, I negotiated partnerships with companies and educational institutions in the region to secure internship opportunities for international exchange participants.",
+        "startDate": "2021-09",
+        "endDate": "2024-08"
       }
     ],
     "awards": [
       {
         "order": 0,
-        "doc": null,
-        "flagCode": "tn",
         "icon": "Award",
         "images": [],
         "id": "6a6e5b343d381ce7bc7062d7",
-        "title": "Hult Prize ISI Ariana Second Place",
-        "place": "Tunisia",
-        "date": "Feb 2024"
+        "title": "Innovation Prize Second Place",
+        "date": "2024-02",
+        "country": "TN",
+        "city": "Tunis"
       },
       {
         "order": 1,
-        "doc": null,
-        "flagCode": "nl",
         "icon": "Trophy",
         "images": [
-          "awards/award-awa-2023-1.jpg",
-          "awards/award-awa-2023-2.jpg",
-          "awards/award-awa-2023-3.jpg",
-          "awards/award-awa-2023-4.jpg"
+          "award-awa-2023-1.jpg",
+          "award-awa-2023-2.jpg",
+          "award-awa-2023-3.jpg",
+          "award-awa-2023-4.jpg"
         ],
         "id": "6a6e5b343d381ce7bc7062d8",
         "title": "Action With Africa Vice Champions",
-        "place": "Netherlands",
-        "date": "Oct 2023"
+        "date": "2023-10",
+        "country": "NL",
+        "city": "Tunis"
       },
       {
         "order": 2,
-        "doc": null,
-        "flagCode": "tn",
         "icon": "Medal",
         "images": [],
         "id": "6a6e5b343d381ce7bc7062d9",
-        "title": "Ichmilni Race Enactus Tunisia Finalists",
-        "place": "Tunisia",
-        "date": "May 2023"
+        "title": "Ichmilni Race Globex Tunisia Finalists",
+        "date": "2023-05",
+        "country": "TN",
+        "city": "Tunis"
       },
       {
         "order": 3,
-        "doc": null,
-        "flagCode": "pr",
         "icon": "Trophy",
         "images": [
-          "awards/award-ewc-2022-1.jpg",
-          "awards/award-ewc-2022-2.jpg",
-          "awards/award-ewc-2022-3.jpg",
-          "awards/award-ewc-2022-4.jpg"
+          "award-ewc-2022-1.jpg",
+          "award-ewc-2022-2.jpg",
+          "award-ewc-2022-3.jpg",
+          "award-ewc-2022-4.jpg"
         ],
         "id": "6a6e5b343d381ce7bc7062da",
-        "title": "Enactus World Cup Vice Champions",
-        "place": "Puerto Rico",
-        "date": "Nov 2022"
+        "title": "Globex World Cup Vice Champions",
+        "date": "2022-11",
+        "country": "PR",
+        "city": "Tunis"
       }
     ]
   }

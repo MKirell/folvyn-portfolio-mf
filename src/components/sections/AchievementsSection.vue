@@ -57,7 +57,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center text-gold opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 shrink-0 animate-icon-hint"
-                  title="View on LinkedIn"
+                  :title="a11y.viewLinkedin"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -79,7 +79,7 @@
               <p class="text-[0.92rem] text-ink font-medium mb-[5px]">{{ vol.role }}</p>
               <div class="flex items-center gap-2 mb-[10px]">
                 <time class="font-mono text-[0.75rem] text-ink-soft opacity-75">{{
-                  vol.period
+                  volPeriod(vol)
                 }}</time>
                 <a
                   v-if="vol.doc"
@@ -87,7 +87,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="inline-flex items-center text-gold opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 leading-none shrink-0 animate-icon-hint"
-                  title="View attestation"
+                  :title="a11y.viewAttestation"
                 >
                   <Paperclip :size="15" />
                 </a>
@@ -133,21 +133,22 @@
                 </p>
                 <div class="flex items-center justify-between gap-2">
                   <span
-                    v-if="award.place"
+                    v-if="award.country"
                     class="flex items-center gap-[6px] font-mono text-[0.72rem] text-ink-soft"
                   >
-                    {{ award.place }}
+                    {{ formatPlace(award.country, award.city, activeLang) }}
                     <span
-                      v-if="award.flagCode"
                       class="block w-4 h-[11px] bg-cover bg-center bg-no-repeat rounded-[2px] shrink-0"
-                      :style="{ backgroundImage: `url(&quot;${flagUrl(award.flagCode)}&quot;)` }"
+                      :style="{
+                        backgroundImage: `url(&quot;${flagUrl(award.country.toLowerCase())}&quot;)`,
+                      }"
                       aria-hidden="true"
                     ></span>
                   </span>
                   <time
                     v-if="award.date"
                     class="hidden max-900:inline shrink-0 font-mono text-[0.68rem] text-ink-soft opacity-70 whitespace-nowrap"
-                    >{{ award.date }}</time
+                    >{{ formatMonthShort(award.date, activeLang) }}</time
                   >
                 </div>
               </div>
@@ -155,7 +156,7 @@
                 <time
                   v-if="award.date"
                   class="max-900:hidden font-mono text-[0.68rem] text-ink-soft opacity-70 whitespace-nowrap"
-                  >{{ award.date }}</time
+                  >{{ formatMonthShort(award.date, activeLang) }}</time
                 >
                 <button
                   type="button"
@@ -166,7 +167,7 @@
                       : 'cursor-default text-ink-soft opacity-30'
                   "
                   :tabindex="award.images && award.images.length ? 0 : -1"
-                  title="View photos"
+                  :title="a11y.viewPhotos"
                   @click="
                     award.images && award.images.length && openLightbox(award.images, award.title)
                   "
@@ -187,16 +188,6 @@
                     <path d="M21 15l-5-5L5 21" />
                   </svg>
                 </button>
-                <a
-                  v-if="award.doc"
-                  :href="docUrl(award.doc)"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex items-center text-gold opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 leading-none animate-icon-hint"
-                  title="View document"
-                >
-                  <Paperclip :size="15" />
-                </a>
               </span>
             </li>
           </ul>
@@ -213,7 +204,7 @@
         <button
           class="absolute top-5 right-6 flex items-center justify-center w-9 h-9 rounded-full bg-surface border border-line/12 text-ink-soft leading-none cursor-pointer opacity-90 transition-[opacity,border-color,color] motion-reduce:transition-none hover:opacity-100 hover:border-accent/[0.38] hover:text-accent-deep"
           type="button"
-          aria-label="Close"
+          :aria-label="a11y.close"
           @click="closeLightbox"
         >
           <X :size="22" />
@@ -222,7 +213,7 @@
           v-if="lightbox.images.length > 1"
           class="absolute top-1/2 -translate-y-1/2 left-14 max-700:left-6 bg-surface border border-line/12 text-ink-soft leading-none w-11 h-11 rounded-full cursor-pointer flex items-center justify-center opacity-90 transition-[opacity,border-color,color] motion-reduce:transition-none hover:opacity-100 hover:border-accent/[0.38] hover:text-accent-deep"
           type="button"
-          aria-label="Previous image"
+          :aria-label="a11y.previousImage"
           @click="prevImage"
         >
           <ChevronLeft :size="26" />
@@ -236,7 +227,7 @@
           v-if="lightbox.images.length > 1"
           class="absolute top-1/2 -translate-y-1/2 right-14 max-700:right-6 bg-surface border border-line/12 text-ink-soft leading-none w-11 h-11 rounded-full cursor-pointer flex items-center justify-center opacity-90 transition-[opacity,border-color,color] motion-reduce:transition-none hover:opacity-100 hover:border-accent/[0.38] hover:text-accent-deep"
           type="button"
-          aria-label="Next image"
+          :aria-label="a11y.nextImage"
           @click="nextImage"
         >
           <ChevronRight :size="26" />
@@ -258,6 +249,7 @@ import { computed, ref, onUnmounted, type Component } from 'vue'
 import { boldify } from '@/utils/text'
 import { docUrl, imgUrl } from '@/utils/docs'
 import { flagUrl } from '@/utils/flags'
+import { formatMonthShort } from '@/utils/period'
 import {
   Paperclip,
   X,
@@ -270,17 +262,25 @@ import {
 } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
-import { useMessages } from '@/i18n'
+import { useMessages, useA11y, useActiveLang } from '@/i18n'
 import { useLanguage } from '@/composables/useLanguage'
+import { formatPlace, formatSpanWithDuration } from '@/utils/period'
+import type { ApiVolunteering } from '@/types/api'
 import { usePagedList } from '@/composables/usePagedList'
 import PageControl from '@/components/items/PageControl.vue'
 import { PAGE_SIZE } from '@/config/pagination'
 
+const a11y = useA11y()
+const activeLang = useActiveLang()
 const store = usePortfolioStore()
 const t = useMessages()
 const { achievements } = storeToRefs(store)
 
 const { lang } = useLanguage()
+
+function volPeriod(vol: ApiVolunteering): string {
+  return formatSpanWithDuration(vol.startDate, vol.endDate, lang.value)
+}
 
 const volunteering = usePagedList(
   computed(() => achievements.value.volunteering),

@@ -3,8 +3,16 @@ import { useLanguage } from '@/composables/useLanguage'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useActiveLang, useMessages } from '@/i18n'
-import { countryName, displayPhone, fullName, linkedinHandle } from '@/utils/person'
-import { formatPeriod } from '@/utils/period'
+import {
+  contactBlurb,
+  countryName,
+  displayPhone,
+  fullName,
+  languageName,
+  linkedinHandle,
+} from '@/utils/person'
+import { formatPeriod, formatSpan, formatSpanWithDuration, formatYearSpan } from '@/utils/period'
+import { honorsLabel, levelLabel } from '@/utils/vocabularies'
 import { docUrl } from '@/utils/docs'
 import { track } from '@/composables/useAnalytics'
 import type { ApiExperience } from '@/types/api'
@@ -55,16 +63,8 @@ export interface UseShell {
 export function useShell(): UseShell {
   const { lang, setLang, availableLangs } = useLanguage()
   const store = usePortfolioStore()
-  const {
-    achievements,
-    education,
-    experiences,
-    person,
-    profile,
-    projects,
-    skillCategories,
-    stats,
-  } = storeToRefs(store)
+  const { achievements, education, experiences, person, projects, skillCategories, stats } =
+    storeToRefs(store)
   const t = useMessages()
   const activeLang = useActiveLang()
 
@@ -103,9 +103,7 @@ export function useShell(): UseShell {
   }
 
   function supportedLangs(): Lang[] {
-    return availableLangs.value.map(
-      (m: { code: string; label: string; flagCode: string }) => m.code,
-    )
+    return availableLangs.value.map((m: { code: string; flagCode: string }) => m.code)
   }
 
   function resumeInfo(): { file: string; url: string | undefined } {
@@ -163,14 +161,17 @@ export function useShell(): UseShell {
         return
       }
       push('heading', `${project.title} — ${project.badge}`)
-      push('dim', project.period)
+      push('dim', formatSpan(project.startDate, project.endDate, lang.value))
       push('rich', project.desc)
       push('dim', '  ' + project.tags.join(', '))
       return
     }
     push('heading', t.value.headings.projects)
     items.forEach((project, i) => {
-      push('text', `${project.title} — ${project.badge} (${project.period})`)
+      push(
+        'text',
+        `${project.title} — ${project.badge} (${formatSpan(project.startDate, project.endDate, lang.value)})`,
+      )
       push('rich', '  ' + project.desc)
       if (i < items.length - 1) push('blank')
     })
@@ -182,7 +183,7 @@ export function useShell(): UseShell {
     education.value.degrees.forEach((d) => {
       push(
         'dim',
-        `  ${d.years}  ${d.title} — ${d.school ?? ''}${d.mention ? ' (' + d.mention + ')' : ''}`,
+        `  ${formatYearSpan(d.startDate, d.endDate, lang.value)}  ${d.title} — ${d.school ?? ''}${d.honors ? ' (' + honorsLabel(d.honors, lang.value) + ')' : ''}`,
       )
     })
     push('blank')
@@ -193,7 +194,10 @@ export function useShell(): UseShell {
     push('blank')
     push('text', t.value.labels.spokenLanguages)
     education.value.spokenLanguages.forEach((l) => {
-      push('dim', `  ${l.name} — ${l.level} (${l.pct}%)`)
+      push(
+        'dim',
+        `  ${languageName(l.code, lang.value)} — ${levelLabel(l.level, lang.value)} (${l.pct}%)`,
+      )
     })
   }
 
@@ -201,19 +205,22 @@ export function useShell(): UseShell {
     push('heading', t.value.headings.achievements)
     push('text', t.value.labels.volunteering)
     achievements.value.volunteering.forEach((v) => {
-      push('dim', `  ${v.org} — ${v.role} (${v.period})`)
+      push(
+        'dim',
+        `  ${v.org} — ${v.role} (${formatSpanWithDuration(v.startDate, v.endDate, lang.value)})`,
+      )
       push('rich', '  ' + v.desc)
     })
     push('blank')
     push('text', t.value.labels.awards)
     achievements.value.awards.forEach((a) => {
-      push('dim', `  ${a.title}${a.place ? ' — ' + a.place : ''}`)
+      push('dim', `  ${a.title}${a.country ? ' — ' + countryName(a.country, lang.value) : ''}`)
     })
   }
 
   function printContact(): void {
     push('heading', t.value.headings.contact)
-    push('rich', person.value.contactDesc)
+    push('rich', contactBlurb(person.value, t.value))
     push('text', `${t.value.labels.email}: ${person.value.email}`)
     push('text', `${t.value.labels.phone}: ${displayPhone(person.value.phone)}`)
     push('text', `${t.value.labels.linkedin}: ${linkedinHandle(person.value.linkedin)}`)
@@ -233,8 +240,14 @@ export function useShell(): UseShell {
     )
     push('text', `Role: ${person.value.headline}`)
     push('text', `Employer: ${person.value.affiliation}`)
-    push('text', `Languages: ${education.value.spokenLanguages.map((l) => l.name).join(', ')}`)
-    push('text', `Stack: ${profile.value.highlights.join(', ')}`)
+    push(
+      'text',
+      `Languages: ${education.value.spokenLanguages.map((l) => languageName(l.code, lang.value)).join(', ')}`,
+    )
+    push(
+      'text',
+      `Stack: ${skillCategories.value.flatMap((category) => category.accentTags).join(', ')}`,
+    )
     stats.value.forEach((stat) => push('dim', `${stat.num} ${stat.label}`))
   }
 

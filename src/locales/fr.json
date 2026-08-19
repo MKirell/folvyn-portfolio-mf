@@ -1,0 +1,249 @@
+{
+  "nav": {
+    "about": "À propos",
+    "experience": "Expérience",
+    "projects": "Projets",
+    "skills": "Compétences",
+    "education": "Formation",
+    "achievements": "Réalisations",
+    "contact": "Contact"
+  },
+  "headings": {
+    "about": "Qui suis-je ?",
+    "experience": "Où ai-je travaillé ?",
+    "projects": "Qu'ai-je réalisé ?",
+    "skills": "Que sais-je faire ?",
+    "education": "Qu'ai-je étudié ?",
+    "achievements": "Qu'ai-je accompli ?",
+    "contact": "Comment me contacter ?"
+  },
+  "consent": {
+    "title": "Compter mes visites successives ?",
+    "body": "La mesure d'audience ne vous identifie jamais. En acceptant, un identifiant est conservé sur cet appareil afin de distinguer une visite de retour d'une première visite. Rien n'est partagé, et vous pouvez revenir sur ce choix à tout moment.",
+    "accept": "Compter les retours",
+    "refuse": "Rester anonyme",
+    "note": "aucune publicité, aucun tiers",
+    "change": "Choix de mesure"
+  },
+  "labels": {
+    "currentRole": "En poste",
+    "showMore": "Voir l'expérience précédente",
+    "showLess": "Voir moins",
+    "earlierRoles": "postes précédents",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "degrees": "Diplômes",
+    "certifications": "Certifications",
+    "spokenLanguages": "Langues",
+    "volunteering": "Bénévolat",
+    "awards": "Récompenses",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "linkedin": "LinkedIn",
+    "location": "Localisation",
+    "contactCta": "M'envoyer un message →",
+    "contactBlurbWorking": "Actuellement **{role}** chez **{org}**. Ouvert aux nouvelles opportunités et aux échanges.",
+    "contactBlurbRole": "Actuellement **{role}**. Ouvert aux nouvelles opportunités et aux échanges.",
+    "contactBlurbPlain": "Ouvert aux nouvelles opportunités et aux échanges."
+  },
+  "hero": {
+    "cta": {
+      "projects": "Voir mes projets",
+      "contact": "Me contacter"
+    },
+    "card": {
+      "headline": "profil",
+      "affiliation": "affiliation",
+      "location": "localisation",
+      "languages": "langues"
+    }
+  },
+  "stats": {
+    "experience": "années d'expérience",
+    "projects": "projets personnels",
+    "certifications": "certifications tech",
+    "awards": "prix en compétition"
+  },
+  "period": {
+    "present": "Présent",
+    "month": "mois",
+    "months": "mois",
+    "year": "an",
+    "years": "ans"
+  },
+  "footer": "© {year} {brand} · Tous droits réservés",
+  "shell": {
+    "promptUser": "invite",
+    "promptHost": "folvyn",
+    "placeholder": "tapez 'help' pour commencer…",
+    "welcome": [
+      "FolvynOS [Version 26.07.1]",
+      "Tapez 'help' pour voir les commandes disponibles.",
+      ""
+    ],
+    "helpIntro": "Commandes disponibles :",
+    "helpItems": [
+      {
+        "cmd": "help",
+        "desc": "afficher cette liste"
+      },
+      {
+        "cmd": "about",
+        "desc": "qui je suis"
+      },
+      {
+        "cmd": "whoami",
+        "desc": "identité rapide"
+      },
+      {
+        "cmd": "ls [dir]",
+        "desc": "lister sections / fichiers"
+      },
+      {
+        "cmd": "cat <file>",
+        "desc": "afficher un fichier"
+      },
+      {
+        "cmd": "skills",
+        "desc": "compétences techniques"
+      },
+      {
+        "cmd": "experience",
+        "desc": "expérience professionnelle"
+      },
+      {
+        "cmd": "projects",
+        "desc": "projets phares"
+      },
+      {
+        "cmd": "education",
+        "desc": "diplômes & certifications"
+      },
+      {
+        "cmd": "achievements",
+        "desc": "récompenses & bénévolat"
+      },
+      {
+        "cmd": "contact",
+        "desc": "comment me contacter"
+      },
+      {
+        "cmd": "resume",
+        "desc": "télécharger mon CV"
+      },
+      {
+        "cmd": "github",
+        "desc": "ouvrir mon GitHub"
+      },
+      {
+        "cmd": "linkedin",
+        "desc": "ouvrir mon LinkedIn"
+      },
+      {
+        "cmd": "email",
+        "desc": "rédiger un e-mail"
+      },
+      {
+        "cmd": "cd <section>",
+        "desc": "défiler la page jusque-là"
+      },
+      {
+        "cmd": "lang <code>",
+        "desc": "changer de langue"
+      },
+      {
+        "cmd": "neofetch",
+        "desc": "infos système, à ma façon"
+      },
+      {
+        "cmd": "history",
+        "desc": "commandes passées"
+      },
+      {
+        "cmd": "clear",
+        "desc": "effacer l'écran"
+      },
+      {
+        "cmd": "man <cmd>",
+        "desc": "manuel d'une commande"
+      }
+    ],
+    "helpFooter": "Astuce : ↑ / ↓ pour l'historique, Tab pour autocompléter.",
+    "messages": {
+      "notFound": "commande introuvable : {cmd}",
+      "tryHelp": "Tapez 'help' pour voir les commandes disponibles.",
+      "catNotFound": "cat : {name} : Fichier ou dossier introuvable",
+      "catUsage": "usage : cat <file>",
+      "sudoDenied": "invite n'est pas dans le fichier sudoers. Cet incident sera signalé. (pas vraiment — tapez 'contact' pour un accès réel 😉)",
+      "sudoSandwich": "D'accord. 🥪",
+      "sudoRm": "Bien tenté. Ce portfolio a de meilleures sauvegardes que ça. 😏",
+      "slJoke": "🚂💨 Tchou-tchou ! (Vous vouliez dire 'ls', non ?)",
+      "dirJoke": "Ceci n'est pas Windows 😉 — essayez 'ls'.",
+      "exitMsg": "Impossible de fermer ce terminal — mais 'Échap' peut désactiver le prompt si besoin.",
+      "cdUsage": "usage : cd <section> — essayez : {sections}",
+      "cdUnknown": "cd : {name} : Section introuvable. Essayez : {sections}",
+      "cdNavigating": "Navigation vers #{section}…",
+      "cdSections": "hero, about, experience, projects, skills, education, achievements, contact",
+      "langSwitched": "Langue changée en {lang}.",
+      "langUnknown": "Langue inconnue '{code}'. Essayez : {codes}",
+      "resumeOpening": "Ouverture du CV ({file})…",
+      "linkOpening": "Ouverture de {url} dans un nouvel onglet…",
+      "emailOpening": "Ouverture du client mail…",
+      "manUnknown": "Aucune entrée de manuel pour {cmd}",
+      "manUsage": "usage : man <cmd>",
+      "historyEmpty": "Aucun historique de commandes.",
+      "whoamiRole": "Vous êtes dans le terminal de"
+    }
+  },
+  "a11y": {
+    "skipToMain": "Aller au contenu principal",
+    "loadFailed": "Ce portfolio n’a pas pu être chargé.",
+    "retry": "Réessayer",
+    "loading": "Chargement",
+    "waitingEditor": "En attente de l’éditeur…",
+    "viewCertificate": "Voir le certificat",
+    "siteFooter": "Pied de page",
+    "footerLinks": "Liens de pied de page",
+    "mainNavigation": "Navigation principale",
+    "languageProficiency": "Niveau de langue",
+    "viewLinkedin": "Voir sur LinkedIn",
+    "viewAttestation": "Voir l’attestation",
+    "viewPhotos": "Voir les photos",
+    "viewDocument": "Voir le document",
+    "close": "Fermer",
+    "previousImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "viewDiploma": "Voir le diplôme",
+    "technologiesUsed": "Technologies utilisées",
+    "linkedinProfile": "Profil LinkedIn",
+    "sendEmail": "Envoyer un e-mail",
+    "downloadResume": "Télécharger le CV",
+    "downloadCv": "Télécharger le CV",
+    "terminalInput": "Saisie de commande du terminal",
+    "projectList": "Liste des projets",
+    "viewGithub": "Voir sur GitHub",
+    "viewFullDetails": "Voir tous les détails",
+    "viewFullProject": "Voir tous les détails du projet",
+    "clickFullDetails": "Cliquez pour voir tous les détails",
+    "skillCategories": "Catégories de compétences",
+    "technologies": "Technologies",
+    "switchLanguage": "Langue : {current}. Passer à {next}"
+  },
+  "vocabularies": {
+    "honors": {
+      "pass": "Passable",
+      "satisfactory": "Assez bien",
+      "good": "Bien",
+      "very-good": "Très bien",
+      "excellent": "Excellent"
+    },
+    "levels": {
+      "a1": "A1 · Débutant",
+      "a2": "A2 · Élémentaire",
+      "b1": "B1 · Intermédiaire",
+      "b2": "B2 · Courant",
+      "c1": "C1 · Avancé",
+      "c2": "C2 · Maîtrise"
+    }
+  }
+}

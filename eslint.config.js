@@ -6,7 +6,7 @@ import globals from 'globals'
 
 export default [
   {
-    ignores: ['dist/**', 'coverage/**', 'node_modules/**'],
+    ignores: ['dist/**', 'dist-prerender/**', 'coverage/**', 'node_modules/**'],
   },
   js.configs.recommended,
   ...vue.configs['flat/recommended'],
@@ -28,6 +28,12 @@ export default [
     files: ['e2e/**/*.ts'],
     rules: {
       'no-empty-pattern': 'off',
+    },
+  },
+  {
+    files: ['src/i18n/types.ts'],
+    rules: {
+      '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
 ]

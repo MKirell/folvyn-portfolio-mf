@@ -361,7 +361,7 @@ describe('skill tags', () => {
     expect(tags).toEqual(['Third', 'First', 'Second'])
   })
 
-  it('highlights a tag that is also an accent tag, and leaves the others plain', async () => {
+  it('accentTags a tag that is also an accent tag, and leaves the others plain', async () => {
     patch({
       skillCategories: [
         {

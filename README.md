@@ -193,7 +193,7 @@ There is no local deploy script — CI is the only implementation of how the sit
 
 | Piece          | Where                                                                 |
 | -------------- | --------------------------------------------------------------------- |
-| Bucket         | `folvyn-portfolio-mf-848906241169`, private                           |
+| Bucket         | `folvyn-spa-<env>-<account-id>`, private                              |
 | CDN            | CloudFront with origin access control and SPA rewrites                |
 | Provisioned by | [folvyn-platform-iac](https://github.com/MKirell/folvyn-platform-iac) |
 

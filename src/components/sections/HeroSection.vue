@@ -25,22 +25,9 @@
       </div>
 
       <p
-        class="text-[1.08rem] text-ink-soft max-w-[560px] mb-[30px] leading-[1.85]"
+        class="text-[1.12rem] text-ink-soft max-w-[620px] mb-[38px] leading-[1.9]"
         v-html="boldify(profile.tagline)"
       ></p>
-
-      <div class="flex flex-wrap gap-[10px] mb-8">
-        <span
-          v-for="skill in profile.highlights"
-          :key="skill"
-          class="inline-flex items-center bg-surface-2 border border-line/7 rounded-sm px-[10px] py-1 text-[0.78rem] text-ink-soft font-mono transition motion-reduce:transition-none hover:border-accent/[0.38] hover:text-accent-deep"
-          :class="{
-            '!bg-accent/[0.14] !border-accent/[0.38] !text-accent-deep':
-              profile.highlightFocus?.includes(skill),
-          }"
-          >{{ skill }}</span
-        >
-      </div>
 
       <div class="flex gap-[14px] flex-wrap mb-11">
         <a
@@ -113,7 +100,7 @@
                   >{{ t.hero.card.languages }}</span
                 >
                 <span class="text-ink font-medium text-end">{{
-                  education.spokenLanguages.map((l) => l.name).join(' · ')
+                  education.spokenLanguages.map((l) => languageName(l.code, activeLang)).join(' · ')
                 }}</span>
               </div>
             </div>
@@ -149,7 +136,7 @@
             class="flex items-center gap-[9px] pt-2.5 pb-1 mt-1.5 border-t border-line/7 text-[0.86rem] cursor-text"
             @click="openShell"
           >
-            <label for="hero-shell-input" class="sr-only">Portfolio terminal command input</label>
+            <label for="hero-shell-input" class="sr-only">{{ a11y.terminalInput }}</label>
             <span class="text-sage font-mono text-[0.72rem] uppercase tracking-[0.08em] shrink-0"
               ><span class="max-700:hidden">{{ shellPromptLabel }}</span
               ><span class="hidden max-700:inline">{{ shellPromptShort }}</span></span
@@ -178,7 +165,7 @@
             target="_blank"
             rel="noopener noreferrer"
             class="w-[42px] h-[42px] flex items-center justify-center border border-line/7 rounded-[11px] text-ink-soft bg-surface transition motion-reduce:transition-none hover:border-accent/[0.38] hover:text-accent-deep hover:bg-accent/[0.14] hover:-translate-y-0.5"
-            aria-label="LinkedIn profile"
+            :aria-label="a11y.linkedinProfile"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" class="w-[18px] h-[18px]">
               <path
@@ -189,7 +176,7 @@
           <a
             :href="`mailto:${person.email}`"
             class="w-[42px] h-[42px] flex items-center justify-center border border-line/7 rounded-[11px] text-ink-soft bg-surface transition motion-reduce:transition-none hover:border-accent/[0.38] hover:text-accent-deep hover:bg-accent/[0.14] hover:-translate-y-0.5"
-            aria-label="Send email"
+            :aria-label="a11y.sendEmail"
           >
             <svg
               viewBox="0 0 24 24"
@@ -209,8 +196,8 @@
             rel="noopener noreferrer"
             :download="resumeFile"
             class="w-[42px] h-[42px] flex items-center justify-center border border-line/7 rounded-[6px] bg-accent text-white ml-auto transition motion-reduce:transition-none hover:border-accent/[0.38] hover:text-accent-deep hover:bg-accent/[0.14] hover:-translate-y-0.5"
-            aria-label="Download Resume / CV"
-            title="Download CV"
+            :aria-label="a11y.downloadResume"
+            :title="a11y.downloadCv"
           >
             <svg
               viewBox="0 0 24 24"
@@ -252,9 +239,10 @@ import { usePortfolioStore } from '@/stores/portfolio'
 import { docUrl } from '@/utils/docs'
 import { boldify } from '@/utils/text'
 import { onSectionLink } from '@/utils/scroll'
-import { countryName, fullName } from '@/utils/person'
-import { useActiveLang, useMessages } from '@/i18n'
+import { countryName, fullName, languageName } from '@/utils/person'
+import { useActiveLang, useMessages, useA11y } from '@/i18n'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const { education, person, profile } = storeToRefs(store)
 const t = useMessages()

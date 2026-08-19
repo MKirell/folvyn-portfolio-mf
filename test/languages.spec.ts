@@ -5,16 +5,17 @@ import AppNav from '@/components/layout/AppNav.vue'
 import { vReveal } from '@/directives/reveal'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useLanguage } from '@/composables/useLanguage'
+import { languageName } from '@/utils/person'
 import * as api from '@/services/portfolio.api'
 import { fixtures } from './setup'
 import type { ApiLocale } from '@/types/api'
 
 const CATALOGUE: ApiLocale[] = [
-  { code: 'en', label: 'EN', flagCode: 'gb' },
-  { code: 'fr', label: 'FR', flagCode: 'fr' },
-  { code: 'ar', label: 'AR', flagCode: 'tn' },
-  { code: 'es', label: 'ES', flagCode: 'es' },
-  { code: 'de', label: 'DE', flagCode: 'de' },
+  { code: 'en', flagCode: 'gb' },
+  { code: 'fr', flagCode: 'fr' },
+  { code: 'ar', flagCode: 'tn' },
+  { code: 'es', flagCode: 'es' },
+  { code: 'de', flagCode: 'de' },
 ]
 
 function withLocales(count: number): ApiLocale[] {
@@ -59,9 +60,9 @@ describe('the language switcher holds for any number of locales', () => {
       const wrapper = mount(AppNav, { global: { directives: { reveal: vReveal } } })
       const visible = chip(wrapper.html())
 
-      expect(visible).toContain(locale.label)
+      expect(visible).toContain(locale.code.toUpperCase())
       for (const other of langs.filter((entry) => entry.code !== locale.code)) {
-        expect(visible).not.toContain(`>${other.label}`)
+        expect(visible).not.toContain(`>${other.code.toUpperCase()}`)
       }
     }
   })
@@ -77,10 +78,11 @@ describe('the language switcher holds for any number of locales', () => {
 
       const next = langs[(index + 1) % langs.length]
       const label = mount(AppNav, { global: { directives: { reveal: vReveal } } })
-        .find('button[aria-label^="Language:"]')
+        .find('button[data-language-switch]')
         .attributes('aria-label')
 
-      expect(label).toBe(`Language: ${locale.label}. Switch to ${next.label}`)
+      expect(label).toContain(languageName(locale.code, locale.code))
+      expect(label).toContain(languageName(next.code, locale.code))
     }
   })
 

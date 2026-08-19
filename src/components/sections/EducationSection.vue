@@ -53,10 +53,11 @@
               class="flex gap-5 max-480:flex-col max-480:gap-[6px] py-5 border-b border-line/7 last:border-b-0"
             >
               <time
-                class="shrink-0 font-mono text-[0.72rem] text-ink-soft w-[90px] max-480:w-auto pt-[3px] max-480:pt-0"
-                >{{ deg.years }}</time
+                :datetime="deg.startDate"
+                class="max-480:w-auto max-480:border-e-0 max-480:pe-0 max-480:pt-0 w-[118px] shrink-0 whitespace-nowrap border-e border-line/8 pe-5 pt-[3px] font-mono text-[0.75rem] leading-[1.75] tracking-[0.02em] text-ink-soft"
+                >{{ span(deg) }}</time
               >
-              <div>
+              <div class="min-w-0">
                 <div class="flex items-center gap-2">
                   <h3 class="font-disp text-[1.05rem] font-semibold text-ink mb-[5px]">
                     {{ deg.title }}
@@ -67,46 +68,52 @@
                     target="_blank"
                     rel="noopener noreferrer"
                     class="inline-flex items-center text-gold opacity-60 transition-opacity motion-reduce:transition-none hover:opacity-100 leading-none shrink-0 -mt-[5px] animate-icon-hint"
-                    title="View diploma"
+                    :title="a11y.viewDiploma"
                   >
                     <Paperclip :size="15" />
                   </a>
                 </div>
-                <span v-if="deg.school" class="flex items-center gap-2">
-                  <span class="block text-[0.85rem] text-ink font-medium">{{ deg.school }}</span>
-                  <a
-                    v-if="deg.link"
-                    :href="deg.link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex items-center justify-center text-gold opacity-70 shrink-0 transition-opacity motion-reduce:transition-none hover:opacity-100 animate-icon-hint"
-                    title="View on LinkedIn"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      width="15"
-                      height="15"
-                      aria-hidden="true"
+                <div>
+                  <span v-if="deg.school" class="flex items-center gap-2">
+                    <span class="block text-[0.85rem] leading-[1.75] text-ink font-medium">{{
+                      deg.school
+                    }}</span>
+                    <a
+                      v-if="deg.link"
+                      :href="deg.link"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="flex items-center justify-center text-gold opacity-70 shrink-0 transition-opacity motion-reduce:transition-none hover:opacity-100 animate-icon-hint"
+                      :title="a11y.viewLinkedin"
                     >
-                      <path
-                        d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </span>
-                <span v-if="deg.location" class="block text-[0.85rem] text-ink-soft">{{
-                  deg.location
-                }}</span>
-                <span
-                  v-if="deg.mention"
-                  class="inline-block mt-[9px] bg-gold/[0.12] border border-[rgba(184,137,59,0.3)] rounded-[6px] px-[10px] py-[2px] text-[0.76rem] text-gold font-mono"
-                  >{{ deg.mention }}</span
-                >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        width="15"
+                        height="15"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M10 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </span>
+                  <span
+                    v-if="place(deg)"
+                    class="block text-[0.85rem] leading-[1.75] text-ink-soft"
+                    >{{ place(deg) }}</span
+                  >
+                  <span
+                    v-if="deg.honors"
+                    class="inline-block mt-[9px] bg-gold/[0.12] border border-[rgba(184,137,59,0.3)] rounded-[6px] px-[10px] py-[2px] text-[0.76rem] text-gold font-mono"
+                    >{{ honorsLabel(deg.honors, lang) }} ✦</span
+                  >
+                </div>
               </div>
             </li>
           </ul>
@@ -153,17 +160,29 @@ import { usePagedList } from '@/composables/usePagedList'
 import CertificationCard from '@/components/items/CertificationCard.vue'
 import PageControl from '@/components/items/PageControl.vue'
 import { docUrl } from '@/utils/docs'
+import { formatPlace, formatYearSpan } from '@/utils/period'
+import { honorsLabel } from '@/utils/vocabularies'
+import type { ApiDegree } from '@/types/api'
 import { Paperclip, GraduationCap } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
-import { useMessages } from '@/i18n'
+import { useMessages, useA11y } from '@/i18n'
 import { PAGE_SIZE } from '@/config/pagination'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const t = useMessages()
 const { education } = storeToRefs(store)
 
 const { lang } = useLanguage()
+
+function span(degree: ApiDegree): string {
+  return formatYearSpan(degree.startDate, degree.endDate, lang.value)
+}
+
+function place(degree: ApiDegree): string {
+  return formatPlace(degree.country, degree.city, lang.value)
+}
 
 const degrees = usePagedList(
   computed(() => education.value.degrees),

@@ -38,7 +38,7 @@
       <ul
         :key="paged.page.value"
         class="grid grid-cols-3 max-1200:grid-cols-2 max-900:grid-cols-1 gap-5"
-        aria-label="Project list"
+        :aria-label="a11y.projectList"
         aria-live="polite"
       >
         <li
@@ -50,7 +50,7 @@
         >
           <div class="flex items-center justify-between mb-4">
             <div class="flex flex-col gap-[6px]">
-              <time class="text-[0.72rem] text-ink-soft font-mono">{{ project.period }}</time>
+              <time class="text-[0.72rem] text-ink-soft font-mono">{{ span(project) }}</time>
             </div>
             <span
               class="bg-gold/[0.12] border border-[rgba(184,137,59,0.3)] rounded-[6px] px-[10px] py-[3px] text-[0.72rem] text-gold font-mono"
@@ -68,7 +68,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center text-gold opacity-60 shrink-0 transition-opacity motion-reduce:transition-none hover:opacity-100 animate-icon-hint"
-                title="View on GitHub"
+                :title="a11y.viewGithub"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -90,8 +90,8 @@
             <button
               type="button"
               class="inline-flex items-center justify-center bg-transparent border-0 p-0 cursor-pointer text-gold opacity-60 shrink-0 transition-opacity motion-reduce:transition-none hover:opacity-100 animate-icon-hint"
-              title="View full details"
-              aria-label="View full project details"
+              :title="a11y.viewFullDetails"
+              :aria-label="a11y.viewFullProject"
               @click="openModal(project, i)"
             >
               <Maximize2 :size="14" />
@@ -99,7 +99,7 @@
           </div>
           <p
             class="text-ink-soft text-[0.92rem] leading-[1.8] cursor-pointer line-clamp-2"
-            title="Click to view full details"
+            :title="a11y.clickFullDetails"
             @click="openModal(project, i)"
             v-html="boldify(project.desc)"
           ></p>
@@ -121,7 +121,7 @@
         >
           <div class="flex items-center justify-between mb-4">
             <div class="flex flex-col gap-[6px]">
-              <time class="text-[0.72rem] text-ink-soft font-mono">{{ modal.project.period }}</time>
+              <time class="text-[0.72rem] text-ink-soft font-mono">{{ span(modal.project) }}</time>
             </div>
             <div class="flex items-center gap-3">
               <span
@@ -131,7 +131,7 @@
               <button
                 class="flex items-center justify-center bg-transparent border-0 text-ink-soft cursor-pointer opacity-75 transition-opacity motion-reduce:transition-none hover:opacity-100"
                 type="button"
-                aria-label="Close"
+                :aria-label="a11y.close"
                 @click="closeModal"
               >
                 <X :size="18" />
@@ -149,7 +149,7 @@
                 target="_blank"
                 rel="noopener noreferrer"
                 class="inline-flex items-center text-gold opacity-60 shrink-0 transition-opacity motion-reduce:transition-none hover:opacity-100 animate-icon-hint"
-                title="View on GitHub"
+                :title="a11y.viewGithub"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -173,7 +173,7 @@
             class="text-ink-soft text-[0.95rem] leading-[1.8] mb-[22px]"
             v-html="boldify(modal.project.desc)"
           ></p>
-          <ul class="flex flex-wrap gap-[7px]" aria-label="Technologies used">
+          <ul class="flex flex-wrap gap-[7px]" :aria-label="a11y.technologiesUsed">
             <li
               v-for="tag in modal.project.tags"
               :key="tag"
@@ -197,16 +197,23 @@ import { usePagedList } from '@/composables/usePagedList'
 import PageControl from '@/components/items/PageControl.vue'
 import { PAGE_SIZE } from '@/config/pagination'
 import { boldify } from '@/utils/text'
+import { formatSpan } from '@/utils/period'
+import type { ApiProject } from '@/types/api'
 import { Maximize2, X, FolderGit2 } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
-import { useMessages } from '@/i18n'
+import { useMessages, useA11y } from '@/i18n'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const t = useMessages()
 const { projects } = storeToRefs(store)
 
 const { lang } = useLanguage()
+
+function span(project: ApiProject): string {
+  return formatSpan(project.startDate, project.endDate, lang.value)
+}
 const paged = usePagedList(projects, PAGE_SIZE.projects, lang)
 
 const { modal, openModal, closeModal } = useModal()

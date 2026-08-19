@@ -14,6 +14,34 @@ export function monthsBetween(startDate: string, endDate: string | null): number
   return Math.max(1, (endYear - startYear) * MONTHS_IN_YEAR + (endMonth - startMonth) + 1)
 }
 
+export function formatMonthShort(value: string, lang: string): string {
+  const [year, month] = value.split('-').map(Number)
+  if (!year || !month) return value
+
+  try {
+    const name = new Intl.DateTimeFormat(lang, { month: 'short' }).format(
+      new Date(Date.UTC(year, month - 1, 1)),
+    )
+    const short = name.replace(/\.$/, '').slice(0, 3)
+    return `${short.charAt(0).toLocaleUpperCase(lang)}${short.slice(1)} ${year}`
+  } catch {
+    return value
+  }
+}
+
+export function formatMonthLong(value: string, lang: string): string {
+  const [year, month] = value.split('-').map(Number)
+  if (!year || !month) return value
+
+  try {
+    return new Intl.DateTimeFormat(lang, { month: 'long', year: 'numeric' }).format(
+      new Date(Date.UTC(year, month - 1, 1)),
+    )
+  } catch {
+    return value
+  }
+}
+
 export function formatMonth(value: string): string {
   const [year, month] = value.split('-')
   return `${month}/${year}`
@@ -31,13 +59,44 @@ export function formatDuration(months: number, lang: string): string {
   return rest === 0 ? yearPart : `${yearPart} ${rest} ${rest === 1 ? period.month : period.months}`
 }
 
-export function formatPeriod(experience: ApiExperience, lang: string): string {
-  const { period } = messagesFor(lang)
-  const end = experience.endDate ? formatMonth(experience.endDate) : period.present
-  const duration = formatDuration(monthsBetween(experience.startDate, experience.endDate), lang)
-  const where = countryName(experience.country, lang)
+export function formatYear(value: string): string {
+  return value.split('-')[0]
+}
 
-  return [`${formatMonth(experience.startDate)} — ${end}`, duration, where]
+export function formatYearSpan(startDate: string, endDate: string | null, lang: string): string {
+  const { period } = messagesFor(lang)
+  const end = endDate ? formatYear(endDate) : period.present
+  return `${formatYear(startDate)} — ${end}`
+}
+
+export function formatSpan(startDate: string, endDate: string | null, lang: string): string {
+  const { period } = messagesFor(lang)
+  const end = endDate ? formatMonth(endDate) : period.present
+  return `${formatMonth(startDate)} — ${end}`
+}
+
+export function formatSpanWithDuration(
+  startDate: string,
+  endDate: string | null,
+  lang: string,
+): string {
+  const duration = formatDuration(monthsBetween(startDate, endDate), lang)
+  return `${formatSpan(startDate, endDate, lang)} · ${duration}`
+}
+
+export function formatPlace(
+  country: string | null,
+  city: string | null | undefined,
+  lang: string,
+): string {
+  return [city, countryName(country, lang)].filter(Boolean).join(', ')
+}
+
+export function formatPeriod(experience: ApiExperience, lang: string): string {
+  return [
+    formatSpanWithDuration(experience.startDate, experience.endDate, lang),
+    formatPlace(experience.country, experience.city, lang),
+  ]
     .filter(Boolean)
     .join(' · ')
 }

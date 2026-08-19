@@ -2,14 +2,14 @@ import { expect, test } from './fixtures'
 
 test.describe('small screens', () => {
   test('hides the links behind a burger', async ({ site }) => {
-    await site.goto('/fol/mohamed-khalil-zrelly')
+    await site.goto('/fol/ada-lovelace')
 
     await expect(site.locator('#burger')).toBeVisible()
     await expect(site.locator('#navDrawer')).toHaveClass(/-translate-x-full|translate-x-full/)
   })
 
   test('opens and closes the drawer', async ({ site }) => {
-    await site.goto('/fol/mohamed-khalil-zrelly')
+    await site.goto('/fol/ada-lovelace')
 
     await site.locator('#burger').click()
     await expect(site.locator('#burger')).toHaveAttribute('aria-expanded', 'true')
@@ -20,7 +20,7 @@ test.describe('small screens', () => {
   })
 
   test('closes the drawer after choosing a section', async ({ site }) => {
-    await site.goto('/fol/mohamed-khalil-zrelly')
+    await site.goto('/fol/ada-lovelace')
 
     await site.locator('#burger').click()
     await site
@@ -33,7 +33,7 @@ test.describe('small screens', () => {
   })
 
   test('keeps the navbar compact at both scroll positions', async ({ site }) => {
-    await site.goto('/fol/mohamed-khalil-zrelly')
+    await site.goto('/fol/ada-lovelace')
     const navbar = site.locator('#navbar')
 
     await expect.poll(async () => (await navbar.boundingBox())?.height).toBe(56)

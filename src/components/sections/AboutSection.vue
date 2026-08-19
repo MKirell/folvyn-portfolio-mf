@@ -103,11 +103,11 @@
       <ul
         v-reveal
         class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] max-700:grid-cols-1 gap-8"
-        aria-label="Language proficiency"
+        :aria-label="a11y.languageProficiency"
       >
         <SpokenLanguageRow
           v-for="langItem in education.spokenLanguages"
-          :key="langItem.name"
+          :key="langItem.code"
           :item="langItem"
         />
       </ul>
@@ -127,8 +127,9 @@ import SpokenLanguageRow from '@/components/items/SpokenLanguageRow.vue'
 import { boldify } from '@/utils/text'
 import { onSectionLink } from '@/utils/scroll'
 import { fullName } from '@/utils/person'
-import { useMessages } from '@/i18n'
+import { useMessages, useA11y } from '@/i18n'
 
+const a11y = useA11y()
 const store = usePortfolioStore()
 const { education, person, stats } = storeToRefs(store)
 const t = useMessages()

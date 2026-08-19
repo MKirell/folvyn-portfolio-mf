@@ -21,7 +21,7 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-const SLUG = 'mohamed-khalil-zrelly'
+const SLUG = 'ada-lovelace'
 
 describe('portfolio api', () => {
   it('asks for the address in the path, and the default locale', async () => {
