@@ -66,11 +66,6 @@ function settings(): Settings {
   }
 }
 
-/**
- * The owner segment sits inside the folder -- /imgs/<ownerId>/<file> -- so the
- * distribution's /imgs/* and /files/* behaviours keep matching. The prefix is empty
- * when no bucket is configured, which is how a local database addresses its own files.
- */
 function assetUrl(config: Settings, folder: string, prefix: string, filename: string): string {
   const owner = prefix.replace(/^\/+|\/+$/g, '')
   return `${config.assetsBaseUrl}/${folder}/${owner ? `${owner}/` : ''}${filename}`
@@ -211,12 +206,6 @@ async function renderPortfolio(
   return { written: pages.map((page) => page.key), card }
 }
 
-/**
- * Every published portfolio, which is what a deploy asks for: the renderer's bundle has
- * just changed, so every page it has ever written is stale. The sitemap is written once
- * and the edge is invalidated once, because invalidation paths are a metered resource --
- * past a handful of portfolios one wildcard costs less than one path each.
- */
 async function renderEverything(s3: S3Client, config: Settings): Promise<PrerenderResult> {
   const published = await readPublished(config)
   const shell = await readShell(s3, config.spaBucket, `${config.shellPrefix}/index.html`)
