@@ -34,6 +34,8 @@ interface Settings {
   region: string
 }
 
+const SEPARATE_INVALIDATION_PATHS = 15
+
 const REQUIRED = [
   'API_BASE_URL',
   'SITE_URL',
@@ -64,6 +66,16 @@ function settings(): Settings {
   }
 }
 
+/**
+ * The owner segment sits inside the folder -- /imgs/<ownerId>/<file> -- so the
+ * distribution's /imgs/* and /files/* behaviours keep matching. The prefix is empty
+ * when no bucket is configured, which is how a local database addresses its own files.
+ */
+function assetUrl(config: Settings, folder: string, prefix: string, filename: string): string {
+  const owner = prefix.replace(/^\/+|\/+$/g, '')
+  return `${config.assetsBaseUrl}/${folder}/${owner ? `${owner}/` : ''}${filename}`
+}
+
 async function getJson<T>(url: string): Promise<T> {
   const response = await fetch(url)
   if (!response.ok) throw new Error(`${url} answered ${response.status}`)
@@ -78,8 +90,16 @@ async function readShell(s3: S3Client, bucket: string, key: string): Promise<str
   return body
 }
 
-async function writeSitemap(s3: S3Client, config: Settings): Promise<number> {
-  const published = await getJson<SitemapEntry[]>(`${config.apiBaseUrl}/portfolio/published`)
+async function readPublished(config: Settings): Promise<SitemapEntry[]> {
+  return getJson<SitemapEntry[]>(`${config.apiBaseUrl}/portfolio/published`)
+}
+
+async function writeSitemap(
+  s3: S3Client,
+  config: Settings,
+  entries?: SitemapEntry[],
+): Promise<number> {
+  const published = entries ?? (await readPublished(config))
 
   await s3.send(
     new PutObjectCommand({
@@ -111,27 +131,13 @@ async function invalidate(config: Settings, paths: string[]): Promise<void> {
   )
 }
 
-export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
-  const config = settings()
-  const s3 = new S3Client({ region: config.region })
-  const slug = event.slug?.trim() ?? null
-
-  if (!slug) {
-    return { slug: null, written: [], card: 'skipped', sitemap: await writeSitemap(s3, config) }
-  }
-
+async function renderPortfolio(
+  s3: S3Client,
+  config: Settings,
+  slug: string,
+  shell: string,
+): Promise<{ written: string[]; card: PrerenderResult['card'] }> {
   const prefix = `${config.shellPrefix}/${config.portfolioPrefix}/${slug}`
-
-  if (event.removed) {
-    await s3.send(
-      new DeleteObjectCommand({ Bucket: config.spaBucket, Key: `${prefix}/index.html` }),
-    )
-    const sitemap = await writeSitemap(s3, config)
-    await invalidate(config, [`/${config.portfolioPrefix}/${slug}*`, '/sitemap.xml'])
-    return { slug, written: [], card: 'skipped', sitemap }
-  }
-
-  const shell = await readShell(s3, config.spaBucket, `${config.shellPrefix}/index.html`)
   const first = await getJson<ApiPortfolio>(
     `${config.apiBaseUrl}/portfolio/${encodeURIComponent(slug)}`,
   )
@@ -160,7 +166,7 @@ export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
     try {
       const photoName = portfolio.person.photo
       const photo = photoName
-        ? await fetchPhoto(`${config.assetsBaseUrl}/imgs/${portfolio.assetPrefix}${photoName}`)
+        ? await fetchPhoto(assetUrl(config, 'imgs', portfolio.assetPrefix, photoName))
         : null
 
       const png = await renderCard(portfolio, photo)
@@ -202,8 +208,74 @@ export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
     ),
   )
 
+  return { written: pages.map((page) => page.key), card }
+}
+
+/**
+ * Every published portfolio, which is what a deploy asks for: the renderer's bundle has
+ * just changed, so every page it has ever written is stale. The sitemap is written once
+ * and the edge is invalidated once, because invalidation paths are a metered resource --
+ * past a handful of portfolios one wildcard costs less than one path each.
+ */
+async function renderEverything(s3: S3Client, config: Settings): Promise<PrerenderResult> {
+  const published = await readPublished(config)
+  const shell = await readShell(s3, config.spaBucket, `${config.shellPrefix}/index.html`)
+
+  const written: string[] = []
+  let card: PrerenderResult['card'] = published.length === 0 ? 'skipped' : 'rendered'
+
+  for (const entry of published) {
+    try {
+      const result = await renderPortfolio(s3, config, entry.slug, shell)
+      written.push(...result.written)
+      if (result.card === 'failed') card = 'failed'
+    } catch (error) {
+      card = 'failed'
+      console.error(`[prerender] ${entry.slug} failed: ${(error as Error).message}`)
+    }
+  }
+
+  const sitemap = await writeSitemap(s3, config, published)
+
+  const paths =
+    published.length > SEPARATE_INVALIDATION_PATHS
+      ? [`/${config.portfolioPrefix}/*`]
+      : published.map((entry) => `/${config.portfolioPrefix}/${entry.slug}*`)
+
+  await invalidate(config, [...paths, '/sitemap.xml'])
+
+  return { slug: null, written, card, sitemap }
+}
+
+export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
+  const config = settings()
+  const s3 = new S3Client({ region: config.region })
+  const slug = event.slug?.trim() ?? null
+
+  if (!slug) return renderEverything(s3, config)
+
+  if (event.removed) {
+    const prefix = `${config.shellPrefix}/${config.portfolioPrefix}/${slug}`
+    await s3.send(
+      new DeleteObjectCommand({ Bucket: config.spaBucket, Key: `${prefix}/index.html` }),
+    )
+    const sitemap = await writeSitemap(s3, config)
+    await invalidate(config, [`/${config.portfolioPrefix}/${slug}*`, '/sitemap.xml'])
+    return { slug, written: [], card: 'skipped', sitemap }
+  }
+
+  const shell = await readShell(s3, config.spaBucket, `${config.shellPrefix}/index.html`)
+  const { written, card } = await renderPortfolio(s3, config, slug, shell)
+
+  const context: PageContext = {
+    siteUrl: config.siteUrl,
+    portfolioPrefix: config.portfolioPrefix,
+    slug,
+    ogImage: null,
+  }
+
   const sitemap = await writeSitemap(s3, config)
   await invalidate(config, [`${addressOf(context).slice(config.siteUrl.length)}*`, '/sitemap.xml'])
 
-  return { slug, written: pages.map((page) => page.key), card, sitemap }
+  return { slug, written, card, sitemap }
 }
