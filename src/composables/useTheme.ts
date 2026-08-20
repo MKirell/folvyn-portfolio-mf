@@ -19,7 +19,7 @@ function getStoredTheme(): Theme | null {
 }
 
 function getSystemTheme(): Theme {
-  return window.matchMedia?.('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 const stored = getStoredTheme()
@@ -28,9 +28,9 @@ let followSystem = stored === null
 const theme = ref<Theme>(stored ?? getSystemTheme())
 
 if (window.matchMedia) {
-  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     if (!followSystem) return
-    theme.value = e.matches ? 'light' : 'dark'
+    theme.value = e.matches ? 'dark' : 'light'
   })
 }
 

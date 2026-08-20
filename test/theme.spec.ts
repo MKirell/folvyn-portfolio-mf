@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-async function loadTheme(options: { stored?: string | null; systemLight?: boolean } = {}) {
+async function loadTheme(options: { stored?: string | null; systemDark?: boolean } = {}) {
   vi.resetModules()
   localStorage.clear()
   document.documentElement.className = ''
@@ -12,7 +12,7 @@ async function loadTheme(options: { stored?: string | null; systemLight?: boolea
     writable: true,
     configurable: true,
     value: vi.fn(() => ({
-      matches: options.systemLight ?? false,
+      matches: options.systemDark ?? false,
       addEventListener: (_: string, handler: (event: { matches: boolean }) => void) =>
         listeners.push(handler),
       removeEventListener: vi.fn(),
@@ -35,26 +35,26 @@ describe('useTheme', () => {
   })
 
   it('ignores a stored value that is not a theme', async () => {
-    const { theme } = await loadTheme({ stored: 'chartreuse', systemLight: true })
+    const { theme } = await loadTheme({ stored: 'chartreuse', systemDark: false })
 
     expect(theme.value).toBe('light')
   })
 
   it('follows the system preference when nothing is stored', async () => {
-    expect((await loadTheme({ systemLight: true })).theme.value).toBe('light')
-    expect((await loadTheme({ systemLight: false })).theme.value).toBe('dark')
+    expect((await loadTheme({ systemDark: false })).theme.value).toBe('light')
+    expect((await loadTheme({ systemDark: true })).theme.value).toBe('dark')
   })
 
   it('keeps following the system while the user has not chosen', async () => {
-    const { theme, listeners } = await loadTheme({ systemLight: false })
+    const { theme, listeners } = await loadTheme({ systemDark: true })
 
-    listeners.forEach((notify) => notify({ matches: true }))
+    listeners.forEach((notify) => notify({ matches: false }))
 
     expect(theme.value).toBe('light')
   })
 
   it('stops following the system once the user picks a theme', async () => {
-    const { theme, toggleTheme, listeners } = await loadTheme({ systemLight: false })
+    const { theme, toggleTheme, listeners } = await loadTheme({ systemDark: true })
 
     toggleTheme()
     expect(theme.value).toBe('light')

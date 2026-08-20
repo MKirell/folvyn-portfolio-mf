@@ -77,6 +77,7 @@ ${alternates}
 <meta property="og:type" content="profile" />
 <meta property="og:site_name" content="${attr(BRAND)}" />
 <meta property="og:title" content="${attr(pageTitle)}" />
+<meta property="og:description" content="${attr(description)}" />
 <meta property="og:url" content="${attr(context.canonical)}" />
 ${image}
 <meta property="og:locale" content="${attr(ogLocale(portfolio.lang))}" />
@@ -85,6 +86,7 @@ ${alternateLocales}
 <meta property="profile:last_name" content="${attr(person.familyName)}" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${attr(pageTitle)}" />
+<meta name="twitter:description" content="${attr(description)}" />
 <script type="application/ld+json">${jsonld}</script>
 `
 }

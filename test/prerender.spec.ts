@@ -57,10 +57,10 @@ describe('renderPage', () => {
     expect(html).not.toContain('og-image.png')
   })
 
-  it('gives a share card a title and no description under it', () => {
-    expect(html).not.toContain('og:description')
-    expect(html).not.toContain('twitter:description')
+  it('describes the card for a reader and for a search engine alike', () => {
     expect(html).toContain('og:title')
+    expect(html).toContain('og:description')
+    expect(html).toContain('twitter:description')
     expect(html).toContain('<meta name="description"')
   })
 
