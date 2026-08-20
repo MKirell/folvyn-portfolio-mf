@@ -57,6 +57,13 @@ describe('renderPage', () => {
     expect(html).not.toContain('og-image.png')
   })
 
+  it('gives a share card a title and no description under it', () => {
+    expect(html).not.toContain('og:description')
+    expect(html).not.toContain('twitter:description')
+    expect(html).toContain('og:title')
+    expect(html).toContain('<meta name="description"')
+  })
+
   it('emits no og:image at all when the card could not be rendered', () => {
     const without = renderPage(SHELL, portfolio, { ...CONTEXT, ogImage: null })
 
