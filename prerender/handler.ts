@@ -207,6 +207,29 @@ async function renderPortfolio(
   return { written: pages.map((page) => page.key), card }
 }
 
+async function pruneUnpublished(
+  s3: S3Client,
+  config: Settings,
+  published: string[],
+): Promise<string[]> {
+  const root = `${config.shellPrefix}/${config.portfolioPrefix}/`
+  const listed = await s3.send(new ListObjectsV2Command({ Bucket: config.spaBucket, Prefix: root }))
+
+  const keep = new Set(published)
+  const stale = (listed.Contents ?? []).filter((object) => {
+    const slug = String(object.Key).slice(root.length).split('/')[0]
+    return slug.length > 0 && !keep.has(slug)
+  })
+
+  await Promise.all(
+    stale.map((object) =>
+      s3.send(new DeleteObjectCommand({ Bucket: config.spaBucket, Key: object.Key as string })),
+    ),
+  )
+
+  return stale.map((object) => String(object.Key))
+}
+
 async function renderEverything(s3: S3Client, config: Settings): Promise<PrerenderResult> {
   const published = await readPublished(config)
   const shell = await readShell(s3, config.spaBucket, `${config.shellPrefix}/index.html`)
@@ -224,6 +247,14 @@ async function renderEverything(s3: S3Client, config: Settings): Promise<Prerend
       console.error(`[prerender] ${entry.slug} failed: ${(error as Error).message}`)
     }
   }
+
+  written.push(
+    ...(await pruneUnpublished(
+      s3,
+      config,
+      published.map((entry) => entry.slug),
+    )),
+  )
 
   const sitemap = await writeSitemap(s3, config, published)
 

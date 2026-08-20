@@ -60,7 +60,7 @@
         <p class="mt-2 text-[0.85rem] leading-relaxed opacity-70">{{ store.error }}</p>
 
         <button
-          class="mt-5 w-full rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white"
+          class="mt-5 inline-flex w-full items-center justify-center rounded-[9px] bg-accent px-3.5 py-[7px] text-[0.82rem] font-medium text-white"
           @click="store.load(lang || undefined)"
         >
           {{ a11y.retry }}
