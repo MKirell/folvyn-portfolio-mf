@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { addressOf, renderPage } from '../prerender/html/page'
+import { addressOf, renderPage } from '../../prerender/html/page'
 import type { ApiPortfolio } from '@/types/api'
-import en from './fixtures/portfolio.en.json'
+import en from '../fixtures/portfolio.en.json'
 
 const SHELL = `<!doctype html>
 <html lang="en">

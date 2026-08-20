@@ -3,7 +3,10 @@ import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { honorsLabel, levelLabel } from '@/utils/vocabularies'
 
-const VOCABULARIES = resolve(__dirname, '../../folvyn-portfolio-ms/src/common/dto/vocabularies.ts')
+const VOCABULARIES = resolve(
+  __dirname,
+  '../../../folvyn-portfolio-ms/src/common/dto/vocabularies.ts',
+)
 const available = existsSync(VOCABULARIES)
 
 function listedIn(name: string): string[] {

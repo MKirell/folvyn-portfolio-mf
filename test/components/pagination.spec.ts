@@ -6,7 +6,7 @@ import { useLanguage } from '@/composables/useLanguage'
 import { usePagedList } from '@/composables/usePagedList'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { PAGE_SIZE, EXPERIENCE_VISIBLE } from '@/config/pagination'
-import { fixtures } from './setup'
+import { fixtures } from '../setup'
 import type { ApiExperience, ApiPortfolio } from '@/types/api'
 
 import SkillsSection from '@/components/sections/SkillsSection.vue'

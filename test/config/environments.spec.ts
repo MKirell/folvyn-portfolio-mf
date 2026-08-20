@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 const DEPLOYED = ['dev', 'prod'] as const
 
 function read(environment: string): string {
-  return readFileSync(resolve(__dirname, `../.env.${environment}`), 'utf8')
+  return readFileSync(resolve(__dirname, `../../.env.${environment}`), 'utf8')
 }
 
 function keysOf(environment: string): string[] {

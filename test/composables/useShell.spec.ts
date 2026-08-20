@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useShell, type ShellLine } from '@/composables/useShell'
 import { useLanguage } from '@/composables/useLanguage'
-import { fixtures } from './setup'
+import { fixtures } from '../setup'
 import { messagesFor } from '@/i18n/messages'
 import { displayPhone, fullName, linkedinHandle } from '@/utils/person'
 import { formatPeriod } from '@/utils/period'

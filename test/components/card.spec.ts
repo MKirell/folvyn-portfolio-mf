@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { DWELL_MS, VISIBLE_FRACTION, cardId, resetCards, vCard } from '@/directives/card'
 import { startAnalytics, stopAnalytics } from '@/composables/useAnalytics'
-import { MockIntersectionObserver } from './setup'
+import { MockIntersectionObserver } from '../setup'
 
 interface Beacon {
   events: { type: string; target?: string }[]

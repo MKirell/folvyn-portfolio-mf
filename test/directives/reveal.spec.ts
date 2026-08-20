@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { vReveal } from '@/directives/reveal'
-import { MockIntersectionObserver } from './setup'
+import { MockIntersectionObserver } from '../setup'
 
 function mountRevealed() {
   return mount(

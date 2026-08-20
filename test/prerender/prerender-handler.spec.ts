@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ApiPortfolio } from '@/types/api'
-import en from './fixtures/portfolio.en.json'
+import en from '../fixtures/portfolio.en.json'
 
 const sent: { type: string; input: Record<string, unknown> }[] = []
 
@@ -95,7 +95,7 @@ function pagesWritten(): string[] {
 
 describe('the renderer, asked for everything', () => {
   it('renders every published portfolio, which is what a deploy asks for', async () => {
-    const { handler } = await import('../prerender/handler')
+    const { handler } = await import('../../prerender/handler')
     const result = await handler({})
 
     for (const entry of PUBLISHED) {
@@ -109,7 +109,7 @@ describe('the renderer, asked for everything', () => {
   })
 
   it('writes the sitemap once, not once per portfolio', async () => {
-    const { handler } = await import('../prerender/handler')
+    const { handler } = await import('../../prerender/handler')
     await handler({})
 
     const sitemaps = sent.filter(
@@ -119,7 +119,7 @@ describe('the renderer, asked for everything', () => {
   })
 
   it('invalidates once, because invalidation paths are metered', async () => {
-    const { handler } = await import('../prerender/handler')
+    const { handler } = await import('../../prerender/handler')
     await handler({})
 
     const invalidations = sent.filter((call) => call.type === 'CreateInvalidationCommand')
@@ -129,7 +129,7 @@ describe('the renderer, asked for everything', () => {
 
 describe('the renderer, asked for one portfolio', () => {
   it('renders only the slug it was given', async () => {
-    const { handler } = await import('../prerender/handler')
+    const { handler } = await import('../../prerender/handler')
     const result = await handler({ slug: 'ada-lovelace' })
 
     expect(pagesWritten()).toContain('portfolio/fol/ada-lovelace/index.html')
@@ -138,7 +138,7 @@ describe('the renderer, asked for one portfolio', () => {
   })
 
   it('removes the page rather than rendering it when the portfolio is gone', async () => {
-    const { handler } = await import('../prerender/handler')
+    const { handler } = await import('../../prerender/handler')
     await handler({ slug: 'ada-lovelace', removed: true })
 
     const deleted = sent

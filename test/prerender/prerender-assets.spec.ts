@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { initialsOf } from '../prerender/image/card'
-import { renderSitemap } from '../prerender/sitemap'
+import { initialsOf } from '../../prerender/image/card'
+import { renderSitemap } from '../../prerender/sitemap'
 import type { ApiPortfolio } from '@/types/api'
-import en from './fixtures/portfolio.en.json'
+import en from '../fixtures/portfolio.en.json'
 
 const portfolio = en as unknown as ApiPortfolio
 
@@ -64,10 +64,10 @@ describe('renderSitemap', () => {
 
 describe('the card palette', () => {
   it('is the portfolio’s own, read from the stylesheet rather than restated', async () => {
-    const { palette } = await import('../prerender/image/tokens')
+    const { palette } = await import('../../prerender/image/tokens')
     const { readFileSync } = await import('node:fs')
     const { resolve } = await import('node:path')
-    const css = readFileSync(resolve(__dirname, '../src/style.css'), 'utf8')
+    const css = readFileSync(resolve(__dirname, '../../src/style.css'), 'utf8')
     const colours = palette()
 
     for (const [name, value] of Object.entries(colours)) {

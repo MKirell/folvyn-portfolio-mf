@@ -7,7 +7,7 @@ import { usePortfolioStore } from '@/stores/portfolio'
 import { useLanguage } from '@/composables/useLanguage'
 import { languageName } from '@/utils/person'
 import * as api from '@/services/portfolio.api'
-import { fixtures } from './setup'
+import { fixtures } from '../setup'
 import type { ApiLocale } from '@/types/api'
 
 const CATALOGUE: ApiLocale[] = [
