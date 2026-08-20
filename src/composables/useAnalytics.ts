@@ -267,8 +267,12 @@ export function startAnalytics(lang: string): void {
   timer = window.setInterval(flush, FLUSH_MS)
 
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState !== 'hidden') return
+    if (document.visibilityState !== 'hidden') {
+      dwellFrom = Date.now()
+      return
+    }
     track('dwell', { value: Date.now() - dwellFrom })
+    dwellFrom = Date.now()
     flush()
   })
 }

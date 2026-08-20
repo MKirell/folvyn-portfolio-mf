@@ -35,7 +35,7 @@ async function get<T>(path: string): Promise<T> {
   } catch (error) {
     if (error instanceof ApiError) throw error
     if (error instanceof DOMException && error.name === 'AbortError') {
-      throw new ApiError(`${path} timed out after ${TIMEOUT_MS}ms`)
+      throw new ApiError(`Request timed out after ${TIMEOUT_MS}ms`)
     }
     throw new ApiError(error instanceof Error ? error.message : `${path} failed`)
   } finally {

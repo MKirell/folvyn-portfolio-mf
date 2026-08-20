@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref, shallowRef } from 'vue'
 import { fetchPortfolio } from '@/services/portfolio.api'
 import { currentSlug } from '@/utils/slug'
+import { useA11y } from '@/i18n'
 import { setAssetPrefix } from '@/utils/docs'
 import { deriveStats } from '@/utils/stats'
 import { renderedSections, type SectionKey } from '@/utils/sections'
@@ -51,7 +52,16 @@ export const usePortfolioStore = defineStore('portfolio', () => {
       cache.set(loaded.lang, loaded)
       data.value = loaded
     } catch (e) {
-      error.value = e instanceof Error ? e.message : 'Could not reach the portfolio service'
+      const status = (e as { status?: number }).status
+      const a11y = useA11y().value
+      error.value =
+        status === 404
+          ? a11y.notPublished
+          : status
+            ? a11y.unreachable
+            : e instanceof Error
+              ? e.message
+              : a11y.unreachable
     } finally {
       loading.value = false
     }

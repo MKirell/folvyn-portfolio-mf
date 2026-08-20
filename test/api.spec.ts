@@ -59,7 +59,7 @@ describe('portfolio api', () => {
     await expect(fetchPortfolio(SLUG)).rejects.toBeInstanceOf(ApiError)
   })
 
-  it('reports a timeout as an ApiError naming the route', async () => {
+  it('reports a timeout as an ApiError, without naming the route', async () => {
     fetchMock.mockRejectedValue(new DOMException('aborted', 'AbortError'))
 
     await expect(fetchPortfolio(SLUG)).rejects.toThrow(/timed out/)

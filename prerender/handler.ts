@@ -231,7 +231,7 @@ async function renderEverything(s3: S3Client, config: Settings): Promise<Prerend
       ? [`/${config.portfolioPrefix}/*`]
       : published.map((entry) => `/${config.portfolioPrefix}/${entry.slug}*`)
 
-  await invalidate(config, [...paths, '/sitemap.xml'])
+  await invalidate(config, [...paths, '/og/*', '/sitemap.xml'])
 
   return { slug: null, written, card, sitemap }
 }
@@ -249,7 +249,11 @@ export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
       new DeleteObjectCommand({ Bucket: config.spaBucket, Key: `${prefix}/index.html` }),
     )
     const sitemap = await writeSitemap(s3, config)
-    await invalidate(config, [`/${config.portfolioPrefix}/${slug}*`, '/sitemap.xml'])
+    await invalidate(config, [
+      `/${config.portfolioPrefix}/${slug}*`,
+      `/og/${slug}-*`,
+      '/sitemap.xml',
+    ])
     return { slug, written: [], card: 'skipped', sitemap }
   }
 
@@ -264,7 +268,11 @@ export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
   }
 
   const sitemap = await writeSitemap(s3, config)
-  await invalidate(config, [`${addressOf(context).slice(config.siteUrl.length)}*`, '/sitemap.xml'])
+  await invalidate(config, [
+    `${addressOf(context).slice(config.siteUrl.length)}*`,
+    `/og/${slug}-*`,
+    '/sitemap.xml',
+  ])
 
   return { slug, written, card, sitemap }
 }

@@ -227,7 +227,9 @@
     "clickFullDetails": "Cliquez pour voir tous les détails",
     "skillCategories": "Catégories de compétences",
     "technologies": "Technologies",
-    "switchLanguage": "Langue : {current}. Passer à {next}"
+    "switchLanguage": "Langue : {current}. Passer à {next}",
+    "notPublished": "Ce portfolio n’est pas encore publié.",
+    "unreachable": "Le service du portfolio est injoignable."
   },
   "vocabularies": {
     "honors": {
