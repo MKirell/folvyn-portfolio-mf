@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, type Component } from 'vue'
 import { usePortfolioStore } from '@/stores/portfolio'
+import { setAssetPrefix } from '@/utils/docs'
 import { currentLang } from '@/composables/useLanguage'
 import AboutSection from '@/components/sections/AboutSection.vue'
 import AchievementsSection from '@/components/sections/AchievementsSection.vue'
@@ -87,6 +88,7 @@ function onMessage(event: MessageEvent): void {
   const data = event.data as { type?: string; section?: string; payload?: ApiPortfolio }
   if (data?.type !== MESSAGE || !data.payload) return
 
+  setAssetPrefix(data.payload.assetPrefix ?? '')
   store.data = data.payload
   currentLang.value = data.payload.lang
   requested.value = data.section ?? ''
