@@ -167,7 +167,7 @@ import { Paperclip, GraduationCap } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useMessages, useA11y } from '@/i18n'
-import { PAGE_SIZE } from '@/config/pagination'
+import { PAGE_SIZE } from '@/config/app'
 
 const a11y = useA11y()
 const store = usePortfolioStore()

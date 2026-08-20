@@ -1,7 +1,7 @@
 import type { ApiPortfolio } from '@/types/api'
 import { fullName, languageName } from '@/utils/person'
 import { formatPeriod } from '@/utils/period'
-import { BRAND } from '@/brand'
+import { BRAND } from '@/config/app'
 import { slugify, stripMarkdown, stripTrailingSlash } from './text'
 import { parseCertDate, parseMonthYearRange, span } from './dates'
 import { honorsLabel } from '@/utils/vocabularies'

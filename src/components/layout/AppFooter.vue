@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useTheme } from '@/composables/useTheme'
-import { BRAND } from '@/brand'
+import { BRAND } from '@/config/app'
 import { brandLogo } from '@/utils/logo'
 import { fill, useActiveLang, useMessages, useA11y } from '@/i18n'
 

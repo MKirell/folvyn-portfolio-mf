@@ -1,3 +1,5 @@
+export const BRAND = 'Folvyn'
+
 export const PAGE_SIZE = {
   certifications: 4,
   awards: 4,

@@ -268,7 +268,7 @@ import { formatPlace, formatSpanWithDuration } from '@/utils/period'
 import type { ApiVolunteering } from '@/types/api'
 import { usePagedList } from '@/composables/usePagedList'
 import PageControl from '@/components/items/PageControl.vue'
-import { PAGE_SIZE } from '@/config/pagination'
+import { PAGE_SIZE } from '@/config/app'
 
 const a11y = useA11y()
 const activeLang = useActiveLang()

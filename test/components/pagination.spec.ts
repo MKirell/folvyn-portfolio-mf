@@ -5,7 +5,7 @@ import { vReveal } from '@/directives/reveal'
 import { useLanguage } from '@/composables/useLanguage'
 import { usePagedList } from '@/composables/usePagedList'
 import { usePortfolioStore } from '@/stores/portfolio'
-import { PAGE_SIZE, EXPERIENCE_VISIBLE } from '@/config/pagination'
+import { PAGE_SIZE, EXPERIENCE_VISIBLE } from '@/config/app'
 import { fixtures } from '../setup'
 import type { ApiExperience, ApiPortfolio } from '@/types/api'
 

@@ -84,7 +84,7 @@ import type { Component } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { usePagedList } from '@/composables/usePagedList'
 import PageControl from '@/components/items/PageControl.vue'
-import { PAGE_SIZE } from '@/config/pagination'
+import { PAGE_SIZE } from '@/config/app'
 import { Brain, Bot, Activity, Database, Globe, Cloud, Code2, Languages, Wrench } from '@lucide/vue'
 
 const a11y = useA11y()

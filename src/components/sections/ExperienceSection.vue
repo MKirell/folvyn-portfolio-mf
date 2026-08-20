@@ -255,7 +255,7 @@ import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useActiveLang, useMessages, useA11y } from '@/i18n'
 import { formatPeriod } from '@/utils/period'
-import { EXPERIENCE_VISIBLE } from '@/config/pagination'
+import { EXPERIENCE_VISIBLE } from '@/config/app'
 import type { ApiExperience } from '@/types/api'
 
 const a11y = useA11y()

@@ -1,6 +1,6 @@
 import type { ApiPortfolio } from '@/types/api'
 import { fullName } from '@/utils/person'
-import { BRAND } from '@/brand'
+import { BRAND } from '@/config/app'
 import { OG_HEIGHT, OG_SCALE, OG_WIDTH } from '../og'
 import { escapeAttr, escapeHtml, stripMarkdown } from './text'
 
