@@ -217,7 +217,7 @@ function observeClicks(): void {
       const href = anchor.getAttribute('href') ?? ''
 
       if (href.includes('/files/')) {
-        track('doc', { target: href.split('/files/')[1]?.split('#')[0] })
+        track('doc', { target: href.split('/files/')[1]?.split('#')[0]?.split('/').pop() })
         return
       }
       if (href.startsWith('mailto:')) return track('contact', { target: 'email' })

@@ -232,6 +232,7 @@
 defineProps<{ tinted?: boolean }>()
 
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { track } from '@/composables/useAnalytics'
 import { useTypewriter } from '@/composables/useTypewriter'
 import { useShell, type ShellLineKind } from '@/composables/useShell'
 import { storeToRefs } from 'pinia'
@@ -309,7 +310,10 @@ function onDocumentClick(e: MouseEvent): void {
   }
 }
 
-onMounted(() => document.addEventListener('click', onDocumentClick))
+onMounted(() => {
+  document.addEventListener('click', onDocumentClick)
+  track('section', { target: 'hero' })
+})
 onUnmounted(() => document.removeEventListener('click', onDocumentClick))
 
 watch(
