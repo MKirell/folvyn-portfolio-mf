@@ -49,5 +49,9 @@ export function renderPage(shell: string, portfolio: ApiPortfolio, context: Page
     )
     .replace(/<title>[^<]*<\/title>\s*/, '')
     .replace('</head>', `${head}</head>`)
-    .replace(/<html\b[^>]*>/, `<html lang="${portfolio.lang}">`)
+    .replace(
+      /<html\b([^>]*)>/,
+      (_tag: string, attributes: string) =>
+        `<html${attributes.replace(/ lang="[^"]*"/, '')} lang="${portfolio.lang}">`,
+    )
 }

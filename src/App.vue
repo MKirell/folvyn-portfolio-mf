@@ -35,16 +35,37 @@
     </div>
   </div>
 
-  <div v-else-if="store.error" class="min-h-screen grid place-items-center px-6 text-center">
-    <div>
-      <p class="text-lg font-semibold">{{ a11y.loadFailed }}</p>
-      <p class="mt-2 text-sm opacity-70">{{ store.error }}</p>
-      <button
-        class="mt-6 bg-accent text-white px-5 py-2.5 text-sm font-semibold rounded-lg"
-        @click="store.load(lang || undefined)"
-      >
-        {{ a11y.retry }}
-      </button>
+  <div v-else-if="store.error" class="grid min-h-screen place-items-center px-5" role="main">
+    <div class="w-full max-w-[440px]">
+      <div class="rounded-lg border border-line/10 bg-surface p-6 text-center">
+        <span class="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-accent/10">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            class="h-6 w-6 text-accent"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8v5" stroke-linecap="round" />
+            <path d="M12 16.5h.01" stroke-linecap="round" />
+          </svg>
+        </span>
+
+        <h1 class="font-disp text-[1.3rem] font-semibold tracking-tight">
+          {{ a11y.loadFailed }}
+        </h1>
+
+        <p class="mt-2 text-[0.85rem] leading-relaxed opacity-70">{{ store.error }}</p>
+
+        <button
+          class="mt-5 w-full rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white"
+          @click="store.load(lang || undefined)"
+        >
+          {{ a11y.retry }}
+        </button>
+      </div>
     </div>
   </div>
 

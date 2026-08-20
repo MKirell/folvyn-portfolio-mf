@@ -22,15 +22,24 @@ function getSystemTheme(): Theme {
   return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
+function applyTheme(value: Theme): void {
+  const root = document.documentElement
+  root.classList.remove('scheme-light-dark', 'scheme-light', 'scheme-dark')
+  root.classList.add('scheme-' + value)
+}
+
 const stored = getStoredTheme()
 let followSystem = stored === null
 
 const theme = ref<Theme>(stored ?? getSystemTheme())
 
+applyTheme(theme.value)
+
 if (window.matchMedia) {
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
     if (!followSystem) return
     theme.value = e.matches ? 'dark' : 'light'
+    applyTheme(theme.value)
   })
 }
 
@@ -38,8 +47,7 @@ function setTheme(value: Theme): void {
   followSystem = false
   theme.value = value
   track('theme', { target: value })
-  document.documentElement.classList.remove('scheme-light-dark', 'scheme-light', 'scheme-dark')
-  document.documentElement.classList.add(`scheme-${value}`)
+  applyTheme(value)
   try {
     localStorage.setItem(STORAGE_KEY, value)
   } catch {

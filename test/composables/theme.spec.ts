@@ -90,3 +90,22 @@ describe('useTheme', () => {
     expect(localStorage.getItem('portfolio_theme')).toBe('light')
   })
 })
+
+describe('the theme the page is painted in', () => {
+  it('matches the system preference on a first landing, not just in the code', async () => {
+    document.documentElement.className = ''
+    localStorage.clear()
+    window.matchMedia = ((query: string) => ({
+      matches: query.includes('dark'),
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    })) as unknown as typeof window.matchMedia
+
+    vi.resetModules()
+    const { useTheme } = await import('@/composables/useTheme')
+
+    expect(useTheme().theme.value).toBe('dark')
+    expect(document.documentElement.classList.contains('scheme-dark')).toBe(true)
+    expect(document.documentElement.classList.contains('scheme-light-dark')).toBe(false)
+  })
+})
