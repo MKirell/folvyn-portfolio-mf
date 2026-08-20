@@ -2,6 +2,7 @@ import { CloudFrontClient, CreateInvalidationCommand } from '@aws-sdk/client-clo
 import {
   DeleteObjectCommand,
   GetObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
@@ -245,9 +246,16 @@ export async function handler(event: PrerenderEvent): Promise<PrerenderResult> {
 
   if (event.removed) {
     const prefix = `${config.shellPrefix}/${config.portfolioPrefix}/${slug}`
-    await s3.send(
-      new DeleteObjectCommand({ Bucket: config.spaBucket, Key: `${prefix}/index.html` }),
+    const stale = await s3.send(
+      new ListObjectsV2Command({ Bucket: config.spaBucket, Prefix: `${prefix}/` }),
     )
+
+    await Promise.all(
+      (stale.Contents ?? []).map((object) =>
+        s3.send(new DeleteObjectCommand({ Bucket: config.spaBucket, Key: object.Key as string })),
+      ),
+    )
+
     const sitemap = await writeSitemap(s3, config)
     await invalidate(config, [
       `/${config.portfolioPrefix}/${slug}*`,

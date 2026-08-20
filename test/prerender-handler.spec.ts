@@ -15,10 +15,20 @@ vi.mock('@aws-sdk/client-s3', () => {
         if (command.constructor.name === 'GetObjectCommand') {
           return { Body: { transformToString: async () => SHELL } }
         }
+        if (command.constructor.name === 'ListObjectsV2Command') {
+          return {
+            Contents: [
+              { Key: 'portfolio/fol/ada-lovelace/index.html' },
+              { Key: 'portfolio/fol/ada-lovelace/en/index.html' },
+              { Key: 'portfolio/fol/ada-lovelace/fr/index.html' },
+            ],
+          }
+        }
         return {}
       }
     },
     GetObjectCommand: class extends Command {},
+    ListObjectsV2Command: class extends Command {},
     PutObjectCommand: class extends Command {},
     DeleteObjectCommand: class extends Command {},
   }
@@ -131,7 +141,13 @@ describe('the renderer, asked for one portfolio', () => {
     const { handler } = await import('../prerender/handler')
     await handler({ slug: 'ada-lovelace', removed: true })
 
-    expect(sent.some((call) => call.type === 'DeleteObjectCommand')).toBe(true)
+    const deleted = sent
+      .filter((call) => call.type === 'DeleteObjectCommand')
+      .map((call) => String(call.input.Key))
+
+    expect(deleted).toContain('portfolio/fol/ada-lovelace/index.html')
+    expect(deleted).toContain('portfolio/fol/ada-lovelace/en/index.html')
+    expect(deleted).toContain('portfolio/fol/ada-lovelace/fr/index.html')
     expect(pagesWritten().some((key) => key.endsWith('ada-lovelace/index.html'))).toBe(false)
   })
 })
