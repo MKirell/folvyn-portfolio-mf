@@ -6,7 +6,6 @@ import { palette } from './tokens'
 
 const PAD = 72
 const PHOTO = 300
-const MAX_CHIPS = 5
 
 export function initialsOf(portfolio: ApiPortfolio): string {
   const given = String(portfolio.person.givenName ?? '').trim()
@@ -34,10 +33,6 @@ export function cardTree(portfolio: ApiPortfolio, photo: string | null): unknown
   const name = fullName(portfolio.person)
   const headline = String(portfolio.person.headline ?? '')
   const tagline = stripMarkdown(portfolio.profile.tagline)
-  const chips = portfolio.skillCategories
-    .flatMap((category: { accentTags: string[] }) => category.accentTags)
-    .slice(0, MAX_CHIPS)
-
   const portrait = photo
     ? node('img', {
         src: photo,
@@ -106,7 +101,13 @@ export function cardTree(portfolio: ApiPortfolio, photo: string | null): unknown
         },
         children: [
           node('div', {
-            style: { display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 },
+            style: {
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              minWidth: 0,
+            },
             children: [
               node('div', {
                 style: {
@@ -136,22 +137,6 @@ export function cardTree(portfolio: ApiPortfolio, photo: string | null): unknown
                   maxWidth: 620,
                 },
                 children: tagline,
-              }),
-              node('div', {
-                style: { display: 'flex', gap: 10, marginTop: 30, flexWrap: 'wrap' },
-                children: chips.map((skill: string) =>
-                  node('div', {
-                    style: {
-                      fontFamily: 'JetBrains Mono',
-                      fontSize: 17,
-                      padding: '7px 13px',
-                      borderRadius: 6,
-                      backgroundColor: c.surface,
-                      color: c.soft,
-                    },
-                    children: skill,
-                  }),
-                ),
               }),
             ],
           }),

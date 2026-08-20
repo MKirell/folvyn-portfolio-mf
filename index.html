@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       ;(function () {
+        document.documentElement.classList.add('booting')
         try {
           var stored = localStorage.getItem('portfolio_theme')
           if (stored === 'light' || stored === 'dark') {

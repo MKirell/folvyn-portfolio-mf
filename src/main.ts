@@ -12,3 +12,7 @@ app.use(i18n)
 app.directive('reveal', vReveal)
 app.directive('card', vCard)
 app.mount('#app')
+
+requestAnimationFrame(() => {
+  requestAnimationFrame(() => document.documentElement.classList.remove('booting'))
+})
