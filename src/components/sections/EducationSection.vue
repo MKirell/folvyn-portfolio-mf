@@ -50,7 +50,7 @@
             <li
               v-for="deg in degrees.items.value"
               :key="deg.title"
-              class="flex gap-5 max-480:flex-col max-480:gap-[6px] py-5 border-b border-line/7 last:border-b-0"
+              class="flex gap-5 max-480:flex-col max-480:gap-[6px] py-[18px] border-b border-line/7 last:border-b-0"
             >
               <time
                 :datetime="deg.startDate"
@@ -110,7 +110,7 @@
                   >
                   <span
                     v-if="deg.honors"
-                    class="inline-block mt-[9px] bg-gold/[0.12] border border-[rgba(184,137,59,0.3)] rounded-[6px] px-[10px] py-[2px] text-[0.76rem] text-gold font-mono"
+                    class="inline-block mt-[8px] bg-gold/[0.12] border border-[rgba(184,137,59,0.3)] rounded-[6px] px-[10px] py-[2px] text-[0.76rem] text-gold font-mono"
                     >{{ honorsLabel(deg.honors, lang) }} ✦</span
                   >
                 </div>

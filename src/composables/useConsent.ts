@@ -27,7 +27,7 @@ function write(key: string, value: string): void {
   try {
     localStorage.setItem(key, value)
   } catch {
-    /* storage is unavailable; consent simply does not persist */
+    void 0
   }
 }
 
@@ -35,7 +35,7 @@ function drop(key: string): void {
   try {
     localStorage.removeItem(key)
   } catch {
-    /* nothing to clean up */
+    void 0
   }
 }
 
@@ -54,7 +54,7 @@ export function visitorId(): string | null {
       const parsed = JSON.parse(stored) as StoredVisitor
       if (parsed.until > Date.now() && typeof parsed.id === 'string') return parsed.id
     } catch {
-      /* the value was tampered with; mint a new one */
+      void 0
     }
   }
 

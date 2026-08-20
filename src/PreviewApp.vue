@@ -1,5 +1,9 @@
 <template>
-  <main v-if="ready" ref="rootRef" class="bg-bg text-ink [&_section]:!py-8">
+  <main
+    v-if="ready"
+    ref="rootRef"
+    class="bg-bg text-ink [&_section]:!py-8 [&_#hero]:!min-h-0 [&_#hero]:!pt-14"
+  >
     <component :is="section" v-if="section" />
     <p v-else class="font-mono text-[0.8rem] text-muted">No preview for "{{ requested }}".</p>
   </main>

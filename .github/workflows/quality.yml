@@ -20,6 +20,11 @@ jobs:
 
       - run: npm ci
 
+      - name: Fetch the API so the drift suite has a subject
+        run: |
+          repo=https://github.com/MKirell/folvyn-portfolio-ms.git
+          git clone --depth 1 --branch "${{ github.ref_name }}" "$repo" ../folvyn-portfolio-ms             || git clone --depth 1 "$repo" ../folvyn-portfolio-ms
+
       - name: Typecheck
         run: npm run typecheck
 

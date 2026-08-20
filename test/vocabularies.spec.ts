@@ -1,9 +1,10 @@
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { honorsLabel, levelLabel } from '@/utils/vocabularies'
 
 const VOCABULARIES = resolve(__dirname, '../../folvyn-portfolio-ms/src/common/dto/vocabularies.ts')
+const available = existsSync(VOCABULARIES)
 
 function listedIn(name: string): string[] {
   const text = readFileSync(VOCABULARIES, 'utf8')
@@ -15,7 +16,7 @@ function listedIn(name: string): string[] {
   return [...text.slice(open + 1, close).matchAll(/'([^']+)'/g)].map((entry) => entry[1])
 }
 
-describe('vocabularies mirror the portfolio-ms enums', () => {
+describe.skipIf(!available)('vocabularies mirror the portfolio-ms enums', () => {
   it('renders a label for every honours grade the API accepts, in both languages', () => {
     for (const value of listedIn('HONORS')) {
       for (const lang of ['en', 'fr']) {
