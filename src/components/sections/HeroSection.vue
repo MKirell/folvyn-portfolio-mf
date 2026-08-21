@@ -25,12 +25,14 @@
       </div>
 
       <p
+        v-if="profile.tagline"
         class="text-[1.12rem] text-ink-soft max-w-[620px] mb-[38px] leading-[1.9]"
         v-html="boldify(profile.tagline)"
       ></p>
 
       <div class="flex gap-[14px] flex-wrap mb-11">
         <a
+          v-if="showsProjects"
           href="#projects"
           class="inline-flex items-center gap-2 rounded px-[26px] py-[13px] font-body text-[0.92rem] font-semibold cursor-pointer transition motion-reduce:transition-none bg-accent text-white hover:bg-accent-deep hover:-translate-y-0.5 hover:shadow-[0_10px_26px_rgba(217,119,87,0.32)]"
           @click="onSectionLink($event, 'projects')"
@@ -68,40 +70,15 @@
               :aria-hidden="shellOpen"
             >
               <div
-                class="flex justify-between gap-4 py-3.5 border-b border-line/7 text-[0.86rem] text-ink"
+                v-for="row in cardRows"
+                :key="row.label"
+                class="flex justify-between gap-4 py-3.5 border-b border-line/7 last:border-b-0 text-[0.86rem] text-ink"
               >
                 <span
                   class="text-ink-soft font-mono text-[0.72rem] uppercase tracking-[0.08em] shrink-0"
-                  >{{ t.hero.card.headline }}</span
+                  >{{ row.label }}</span
                 >
-                <span class="text-ink font-medium text-end">{{ person.headline }}</span>
-              </div>
-              <div
-                class="flex justify-between gap-4 py-3.5 border-b border-line/7 text-[0.86rem] text-ink"
-              >
-                <span
-                  class="text-ink-soft font-mono text-[0.72rem] uppercase tracking-[0.08em] shrink-0"
-                  >{{ t.hero.card.affiliation }}</span
-                >
-                <span class="text-ink font-medium text-end">{{ person.affiliation }}</span>
-              </div>
-              <div
-                class="flex justify-between gap-4 py-3.5 border-b border-line/7 text-[0.86rem] text-ink"
-              >
-                <span
-                  class="text-ink-soft font-mono text-[0.72rem] uppercase tracking-[0.08em] shrink-0"
-                  >{{ t.hero.card.location }}</span
-                >
-                <span class="text-ink font-medium text-end">{{ location }}</span>
-              </div>
-              <div class="flex justify-between gap-4 py-3.5 text-[0.86rem] text-ink">
-                <span
-                  class="text-ink-soft font-mono text-[0.72rem] uppercase tracking-[0.08em] shrink-0"
-                  >{{ t.hero.card.languages }}</span
-                >
-                <span class="text-ink font-medium text-end">{{
-                  education.spokenLanguages.map((l) => languageName(l.code, activeLang)).join(' · ')
-                }}</span>
+                <span class="text-ink font-medium text-end">{{ row.value }}</span>
               </div>
             </div>
 
@@ -158,9 +135,11 @@
           </div>
         </div>
         <footer
+          v-if="person.linkedin || person.email || resumeUrl"
           class="flex items-center gap-[10px] px-[22px] py-3.5 border-t border-line/7 bg-surface-2"
         >
           <a
+            v-if="person.linkedin"
             :href="person.linkedin"
             target="_blank"
             rel="noopener noreferrer"
@@ -174,6 +153,7 @@
             </svg>
           </a>
           <a
+            v-if="person.email"
             :href="`mailto:${person.email}`"
             class="w-[42px] h-[42px] flex items-center justify-center border border-line/7 rounded-[11px] text-ink-soft bg-surface transition motion-reduce:transition-none hover:border-accent/[0.38] hover:text-accent-deep hover:bg-accent/[0.14] hover:-translate-y-0.5"
             :aria-label="a11y.sendEmail"
@@ -256,6 +236,22 @@ const location = computed(() =>
 )
 
 const name = computed(() => fullName(person.value))
+
+const showsProjects = computed(() => store.shows('projects'))
+
+const cardRows = computed(() =>
+  [
+    { label: t.value.hero.card.headline, value: person.value.headline },
+    { label: t.value.hero.card.affiliation, value: person.value.affiliation },
+    { label: t.value.hero.card.location, value: location.value },
+    {
+      label: t.value.hero.card.languages,
+      value: education.value.spokenLanguages
+        .map((entry) => languageName(entry.code, activeLang.value))
+        .join(' · '),
+    },
+  ].filter((row) => row.value),
+)
 
 const phrases = computed(() => profile.value.subtitles)
 const { display } = useTypewriter(phrases)

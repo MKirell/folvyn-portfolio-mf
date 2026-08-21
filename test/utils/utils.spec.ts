@@ -330,12 +330,24 @@ describe('renderedSections', () => {
     expect(keys).not.toContain('skills')
   })
 
-  it('shows education when any one of its three lists has an entry', () => {
+  it('shows education for a degree or a certification', () => {
+    const withDegree = portfolio({
+      education: { degrees: [{ title: 'MSc' }], certifications: [], spokenLanguages: [] },
+    })
+    const withCertification = portfolio({
+      education: { degrees: [], certifications: [{ title: 'Cloud' }], spokenLanguages: [] },
+    })
+
+    expect(renderedSections(withDegree).map((entry) => entry.key)).toContain('education')
+    expect(renderedSections(withCertification).map((entry) => entry.key)).toContain('education')
+  })
+
+  it('leaves education out when only spoken languages are filled in, since About renders those', () => {
     const withLanguages = portfolio({
       education: { degrees: [], certifications: [], spokenLanguages: [{ name: 'English' }] },
     })
 
-    expect(renderedSections(withLanguages).map((entry) => entry.key)).toContain('education')
+    expect(renderedSections(withLanguages).map((entry) => entry.key)).not.toContain('education')
   })
 
   it('gives hero and about the same background, then alternates from there', () => {

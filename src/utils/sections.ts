@@ -31,11 +31,7 @@ function hasContent(key: SectionKey, portfolio: ApiPortfolio): boolean {
     case 'skills':
       return portfolio.skillCategories.length > 0
     case 'education':
-      return (
-        portfolio.education.degrees.length > 0 ||
-        portfolio.education.certifications.length > 0 ||
-        portfolio.education.spokenLanguages.length > 0
-      )
+      return portfolio.education.degrees.length > 0 || portfolio.education.certifications.length > 0
     case 'achievements':
       return (
         portfolio.achievements.volunteering.length > 0 || portfolio.achievements.awards.length > 0

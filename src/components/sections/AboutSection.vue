@@ -38,6 +38,7 @@
         </div>
         <div v-reveal class="flex gap-10 max-700:flex-col max-700:gap-9 max-700:items-center">
           <figure
+            v-if="photoUrl"
             class="group relative h-full max-1400:h-[320px] max-700:h-auto max-700:w-full max-700:max-w-[300px] aspect-square shrink-0 overflow-hidden rounded-lg border border-line/7 bg-surface shadow-[0_28px_56px_-28px_rgba(0,0,0,0.6)]"
           >
             <img
@@ -63,7 +64,10 @@
               </p>
             </figcaption>
           </figure>
-          <div class="flex flex-1 flex-col justify-between pl-1 max-700:w-full max-700:pl-0">
+          <div
+            v-if="stats.length"
+            class="flex flex-1 flex-col justify-between pl-1 max-700:w-full max-700:pl-0"
+          >
             <component
               :is="stat.anchor ? 'a' : 'div'"
               v-for="(stat, i) in stats"

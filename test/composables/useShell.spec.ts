@@ -1,12 +1,19 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { useShell, type ShellLine } from '@/composables/useShell'
 import { useLanguage } from '@/composables/useLanguage'
+import { usePortfolioStore } from '@/stores/portfolio'
 import { fixtures } from '../setup'
 import { messagesFor } from '@/i18n/messages'
 import { displayPhone, fullName, linkedinHandle } from '@/utils/person'
 import { formatPeriod } from '@/utils/period'
+import type { ApiPortfolio } from '@/types/api'
 
 const person = fixtures.en.person
+
+function patch(changes: Partial<ApiPortfolio>): void {
+  const store = usePortfolioStore()
+  store.data = { ...(store.data as ApiPortfolio), ...changes }
+}
 
 function createShell() {
   const shell = useShell()
@@ -385,6 +392,100 @@ describe('useShell', () => {
       const shell = createShell()
 
       expect(shell.run('man').some((line) => line.kind === 'error')).toBe(true)
+    })
+  })
+
+  describe('what the portfolio does not have', () => {
+    const en = messagesFor('en')
+
+    it('leaves an empty section out of help', () => {
+      patch({ projects: [], skillCategories: [] })
+      const shell = createShell()
+      const output = shell.text(shell.run('help'))
+
+      expect(output).toContain('experience')
+      expect(output).not.toContain('featured projects')
+      expect(output).not.toContain('technical skills')
+    })
+
+    it('treats the command for an empty section as unknown', () => {
+      patch({ projects: [] })
+      const shell = createShell()
+      const output = shell.run('projects')
+
+      expect(output.some((line) => line.kind === 'error')).toBe(true)
+      expect(shell.text(output)).toContain(en.shell.messages.tryHelp)
+    })
+
+    it('keeps the command once the section has an entry again', () => {
+      patch({ projects: fixtures.en.projects })
+      const shell = createShell()
+
+      expect(shell.text(shell.run('projects'))).toContain(fixtures.en.projects[0].title)
+    })
+
+    it('lists only the files the portfolio serves', () => {
+      patch({ projects: [], skillCategories: [] })
+      const shell = createShell()
+      const output = shell.text(shell.run('ls'))
+
+      expect(output).toContain('about.md')
+      expect(output).not.toContain('projects/')
+      expect(output).not.toContain('skills.md')
+    })
+
+    it('reports a file for an empty section as missing', () => {
+      patch({ skillCategories: [] })
+      const shell = createShell()
+
+      expect(shell.run('cat skills.md').some((line) => line.kind === 'error')).toBe(true)
+    })
+
+    it('prints only the education lists that have entries', () => {
+      patch({
+        education: { ...fixtures.en.education, certifications: [], spokenLanguages: [] },
+      })
+      const shell = createShell()
+      const output = shell.text(shell.run('education'))
+
+      expect(output).toContain(en.labels.degrees)
+      expect(output).not.toContain(en.labels.certifications)
+      expect(output).not.toContain(en.labels.spokenLanguages)
+    })
+
+    it('prints only the achievements lists that have entries', () => {
+      patch({ achievements: { ...fixtures.en.achievements, awards: [] } })
+      const shell = createShell()
+      const output = shell.text(shell.run('achievements'))
+
+      expect(output).toContain(en.labels.volunteering)
+      expect(output).not.toContain(en.labels.awards)
+    })
+
+    it('says so rather than opening nothing when there is no CV', () => {
+      const open = vi.spyOn(window, 'open').mockImplementation(() => null)
+      patch({ person: { ...fixtures.en.person, resume: null } })
+      const shell = createShell()
+      const output = shell.run('resume')
+
+      expect(output.some((line) => line.kind === 'error')).toBe(true)
+      expect(open).not.toHaveBeenCalled()
+    })
+
+    it('names the sections it renders when cd is given a bad target', () => {
+      patch({ projects: [], skillCategories: [] })
+      const shell = createShell()
+      const output = shell.text(shell.run('cd atlantis'))
+
+      expect(output).toContain('about')
+      expect(output).not.toContain('skills')
+    })
+
+    it('leaves an empty section out of neofetch', () => {
+      patch({ skillCategories: [] })
+      const shell = createShell()
+
+      expect(shell.text(shell.run('neofetch'))).not.toContain('Stack:')
     })
   })
 

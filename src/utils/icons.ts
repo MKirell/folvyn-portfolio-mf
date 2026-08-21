@@ -80,6 +80,7 @@ import {
   Terminal,
   TestTube,
   Timer,
+  Trash2,
   TrendingUp,
   Trophy,
   Type,
@@ -176,6 +177,7 @@ export const icons: Record<string, Component> = {
   Terminal,
   TestTube,
   Timer,
+  Trash2,
   TrendingUp,
   Trophy,
   Type,
@@ -187,4 +189,10 @@ export const icons: Record<string, Component> = {
   Workflow,
   Wrench,
   Zap,
+}
+
+export const FALLBACK_ICON: Component = Sparkles
+
+export function iconFor(name: string | null | undefined): Component {
+  return (name && icons[name]) || FALLBACK_ICON
 }

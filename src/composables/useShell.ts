@@ -41,16 +41,46 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
-const ROOT_FILES = [
-  'about.md',
-  'experience/',
-  'projects/',
-  'skills.md',
-  'education.md',
-  'achievements.md',
-  'contact.md',
-  'resume.pdf',
+type SubjectKey =
+  | 'about'
+  | 'experience'
+  | 'projects'
+  | 'skills'
+  | 'education'
+  | 'achievements'
+  | 'contact'
+  | 'resume'
+  | 'github'
+  | 'linkedin'
+
+const FILES: { name: string; section: SubjectKey }[] = [
+  { name: 'about.md', section: 'about' },
+  { name: 'experience/', section: 'experience' },
+  { name: 'projects/', section: 'projects' },
+  { name: 'skills.md', section: 'skills' },
+  { name: 'education.md', section: 'education' },
+  { name: 'achievements.md', section: 'achievements' },
+  { name: 'contact.md', section: 'contact' },
+  { name: 'resume.pdf', section: 'resume' },
 ]
+
+const GATES: Record<string, SubjectKey> = {
+  about: 'about',
+  skills: 'skills',
+  experience: 'experience',
+  exp: 'experience',
+  projects: 'projects',
+  proj: 'projects',
+  education: 'education',
+  edu: 'education',
+  achievements: 'achievements',
+  resume: 'resume',
+  cv: 'resume',
+  github: 'github',
+  gh: 'github',
+  linkedin: 'linkedin',
+  li: 'linkedin',
+}
 
 export interface UseShell {
   lines: Ref<ShellLine[]>
@@ -71,6 +101,32 @@ export function useShell(): UseShell {
   const lines = ref<ShellLine[]>([])
   const inputValue = ref('')
   const placeholder = computed(() => t.value.shell.placeholder)
+
+  const present = computed<Record<SubjectKey, boolean>>(() => ({
+    about: person.value.aboutParagraphs.length > 0,
+    experience: experiences.value.length > 0,
+    projects: projects.value.length > 0,
+    skills: skillCategories.value.length > 0,
+    education:
+      education.value.degrees.length > 0 ||
+      education.value.certifications.length > 0 ||
+      education.value.spokenLanguages.length > 0,
+    achievements:
+      achievements.value.volunteering.length > 0 || achievements.value.awards.length > 0,
+    contact: true,
+    resume: Boolean(person.value.resume),
+    github: Boolean(person.value.github),
+    linkedin: Boolean(person.value.linkedin),
+  }))
+
+  const rootFiles = computed(() =>
+    FILES.filter((file) => present.value[file.section]).map((file) => file.name),
+  )
+
+  function offers(command: string): boolean {
+    const gate = GATES[command]
+    return gate === undefined || present.value[gate]
+  }
   const commandHistory: string[] = []
   let historyPos = 0
   let idCounter = 0
@@ -100,6 +156,10 @@ export function useShell(): UseShell {
 
   function sectionOrder(): string[] {
     return ['hero', ...Object.keys(t.value.nav).filter((key) => store.shows(key as SectionKey))]
+  }
+
+  function sectionList(): string {
+    return sectionOrder().join(', ')
   }
 
   function supportedLangs(): Lang[] {
@@ -177,45 +237,88 @@ export function useShell(): UseShell {
     })
   }
 
-  function printEducation(): void {
-    push('heading', t.value.headings.education)
-    push('text', t.value.labels.degrees)
-    education.value.degrees.forEach((d) => {
-      push(
-        'dim',
-        `  ${formatYearSpan(d.startDate, d.endDate, lang.value)}  ${d.title} — ${d.school ?? ''}${d.honors ? ' (' + honorsLabel(d.honors, lang.value) + ')' : ''}`,
-      )
-    })
-    push('blank')
-    push('text', t.value.labels.certifications)
-    education.value.certifications.forEach((c) => {
-      push('dim', `  ${c.date}  ${c.title} — ${c.issuer}`)
-    })
-    push('blank')
-    push('text', t.value.labels.spokenLanguages)
-    education.value.spokenLanguages.forEach((l) => {
-      push(
-        'dim',
-        `  ${languageName(l.code, lang.value)} — ${levelLabel(l.level, lang.value)} (${l.pct}%)`,
-      )
+  function printBlocks(heading: string, blocks: { label: string; write: () => void }[]): void {
+    push('heading', heading)
+    blocks.forEach((block, index) => {
+      if (index > 0) push('blank')
+      push('text', block.label)
+      block.write()
     })
   }
 
+  function printEducation(): void {
+    const blocks: { label: string; write: () => void }[] = []
+
+    if (education.value.degrees.length) {
+      blocks.push({
+        label: t.value.labels.degrees,
+        write: () =>
+          education.value.degrees.forEach((d) => {
+            push(
+              'dim',
+              `  ${formatYearSpan(d.startDate, d.endDate, lang.value)}  ${d.title} — ${d.school ?? ''}${d.honors ? ' (' + honorsLabel(d.honors, lang.value) + ')' : ''}`,
+            )
+          }),
+      })
+    }
+
+    if (education.value.certifications.length) {
+      blocks.push({
+        label: t.value.labels.certifications,
+        write: () =>
+          education.value.certifications.forEach((c) => {
+            push('dim', `  ${c.date}  ${c.title} — ${c.issuer}`)
+          }),
+      })
+    }
+
+    if (education.value.spokenLanguages.length) {
+      blocks.push({
+        label: t.value.labels.spokenLanguages,
+        write: () =>
+          education.value.spokenLanguages.forEach((l) => {
+            push(
+              'dim',
+              `  ${languageName(l.code, lang.value)} — ${levelLabel(l.level, lang.value)} (${l.pct}%)`,
+            )
+          }),
+      })
+    }
+
+    printBlocks(t.value.headings.education, blocks)
+  }
+
   function printAchievements(): void {
-    push('heading', t.value.headings.achievements)
-    push('text', t.value.labels.volunteering)
-    achievements.value.volunteering.forEach((v) => {
-      push(
-        'dim',
-        `  ${v.org} — ${v.role} (${formatSpanWithDuration(v.startDate, v.endDate, lang.value)})`,
-      )
-      push('rich', '  ' + v.desc)
-    })
-    push('blank')
-    push('text', t.value.labels.awards)
-    achievements.value.awards.forEach((a) => {
-      push('dim', `  ${a.title}${a.country ? ' — ' + countryName(a.country, lang.value) : ''}`)
-    })
+    const blocks: { label: string; write: () => void }[] = []
+
+    if (achievements.value.volunteering.length) {
+      blocks.push({
+        label: t.value.labels.volunteering,
+        write: () =>
+          achievements.value.volunteering.forEach((v) => {
+            push(
+              'dim',
+              `  ${v.org} — ${v.role} (${formatSpanWithDuration(v.startDate, v.endDate, lang.value)})`,
+            )
+            push('rich', '  ' + v.desc)
+          }),
+      })
+    }
+
+    if (achievements.value.awards.length) {
+      blocks.push({
+        label: t.value.labels.awards,
+        write: () =>
+          achievements.value.awards.forEach((a) => {
+            push(
+              'dim',
+              `  ${a.title}${a.country ? ' — ' + countryName(a.country, lang.value) : ''}`,
+            )
+          }),
+      })
+    }
+
+    printBlocks(t.value.headings.achievements, blocks)
   }
 
   function printContact(): void {
@@ -232,22 +335,23 @@ export function useShell(): UseShell {
 
   function printNeofetch(): void {
     const shell = t.value.shell
+    const place = [person.value.city, countryName(person.value.country, activeLang.value)]
+      .filter(Boolean)
+      .join(', ')
+    const rows: [string, string][] = [
+      ['Role', person.value.headline],
+      ['Employer', person.value.affiliation],
+      [
+        'Languages',
+        education.value.spokenLanguages.map((l) => languageName(l.code, lang.value)).join(', '),
+      ],
+      ['Stack', skillCategories.value.flatMap((category) => category.accentTags).join(', ')],
+    ]
+
     push('heading', `${shell.promptUser}@${shell.promptHost}`)
     push('dim', '-'.repeat(`${shell.promptUser}@${shell.promptHost}`.length))
-    push(
-      'text',
-      `OS: FolvynOS (${person.value.city}, ${countryName(person.value.country, activeLang.value)})`,
-    )
-    push('text', `Role: ${person.value.headline}`)
-    push('text', `Employer: ${person.value.affiliation}`)
-    push(
-      'text',
-      `Languages: ${education.value.spokenLanguages.map((l) => languageName(l.code, lang.value)).join(', ')}`,
-    )
-    push(
-      'text',
-      `Stack: ${skillCategories.value.flatMap((category) => category.accentTags).join(', ')}`,
-    )
+    push('text', place ? `OS: FolvynOS (${place})` : 'OS: FolvynOS')
+    rows.forEach(([label, value]) => value && push('text', `${label}: ${value}`))
     stats.value.forEach((stat) => push('dim', `${stat.num} ${stat.label}`))
   }
 
@@ -256,54 +360,53 @@ export function useShell(): UseShell {
     window.open(url, '_blank', 'noopener,noreferrer')
   }
 
+  const READERS: Record<string, () => void> = {
+    'about.md': () => printAbout(),
+    'skills.md': () => printSkills(),
+    'education.md': () => printEducation(),
+    'achievements.md': () => printAchievements(),
+    'contact.md': () => printContact(),
+    'resume.pdf': () => runResume(),
+    'cv.pdf': () => runResume(),
+  }
+
   function cat(name: string): void {
     const clean = name.trim()
     if (!clean) {
       push('error', t.value.shell.messages.catUsage)
       return
     }
+
+    const missing = (): void =>
+      push('error', fmt(t.value.shell.messages.catNotFound, { name: clean }))
+
     if (clean.startsWith('experience/')) {
+      if (!present.value.experience) return missing()
       printExperience(clean.slice('experience/'.length).replace(/\.log$/, ''))
       return
     }
     if (clean.startsWith('projects/')) {
+      if (!present.value.projects) return missing()
       printProjects(clean.slice('projects/'.length).replace(/\.proj$/, ''))
       return
     }
-    switch (clean) {
-      case 'about.md':
-        printAbout()
-        return
-      case 'skills.md':
-        printSkills()
-        return
-      case 'education.md':
-        printEducation()
-        return
-      case 'achievements.md':
-        printAchievements()
-        return
-      case 'contact.md':
-        printContact()
-        return
-      case 'resume.pdf':
-      case 'cv.pdf':
-        runResume()
-        return
-      default:
-        push('error', fmt(t.value.shell.messages.catNotFound, { name: clean }))
-    }
+
+    const read = READERS[clean]
+    const serves = clean === 'cv.pdf' ? present.value.resume : rootFiles.value.includes(clean)
+
+    if (!read || !serves) return missing()
+    read()
   }
 
   function ls(dir?: string): void {
-    if (dir === 'experience' || dir === 'experience/') {
+    if (present.value.experience && (dir === 'experience' || dir === 'experience/')) {
       pushMany(
         'dim',
         jobSlugs().map((s) => `${s}.log`),
       )
       return
     }
-    if (dir === 'projects' || dir === 'projects/') {
+    if (present.value.projects && (dir === 'projects' || dir === 'projects/')) {
       pushMany(
         'dim',
         projectSlugs().map((s) => `${s}.proj`),
@@ -314,31 +417,29 @@ export function useShell(): UseShell {
       push('error', fmt(t.value.shell.messages.catNotFound, { name: dir }))
       return
     }
-    push('dim', ROOT_FILES.join('  '))
+    push('dim', rootFiles.value.join('  '))
   }
 
   function runResume(): void {
     const { file, url } = resumeInfo()
+    if (!url) {
+      push('error', t.value.shell.messages.resumeMissing)
+      return
+    }
     push('text', fmt(t.value.shell.messages.resumeOpening, { file }))
-    if (url) window.open(url, '_blank', 'noopener,noreferrer')
+    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   function runCd(target?: string): void {
     if (!target) {
-      push(
-        'error',
-        fmt(t.value.shell.messages.cdUsage, { sections: t.value.shell.messages.cdSections }),
-      )
+      push('error', fmt(t.value.shell.messages.cdUsage, { sections: sectionList() }))
       return
     }
     const name = target === '~' || target === '..' ? 'hero' : target.toLowerCase()
     if (!sectionOrder().includes(name)) {
       push(
         'error',
-        fmt(t.value.shell.messages.cdUnknown, {
-          name: target,
-          sections: t.value.shell.messages.cdSections,
-        }),
+        fmt(t.value.shell.messages.cdUnknown, { name: target, sections: sectionList() }),
       )
       return
     }
@@ -361,7 +462,10 @@ export function useShell(): UseShell {
       push('error', t.value.shell.messages.manUsage)
       return
     }
-    const entry = t.value.shell.helpItems.find((h) => h.cmd.split(' ')[0] === cmd.toLowerCase())
+    const wanted = cmd.toLowerCase()
+    const entry = t.value.shell.helpItems.find(
+      (h) => h.cmd.split(' ')[0] === wanted && offers(wanted),
+    )
     if (!entry) {
       push('error', fmt(t.value.shell.messages.manUnknown, { cmd }))
       return
@@ -372,7 +476,9 @@ export function useShell(): UseShell {
   const HANDLERS: Record<string, (args: string[]) => void> = {
     help: () => {
       push('heading', t.value.shell.helpIntro)
-      t.value.shell.helpItems.forEach((h) => push('dim', `  ${h.cmd.padEnd(16)} ${h.desc}`))
+      t.value.shell.helpItems
+        .filter((h) => offers(h.cmd.split(' ')[0]))
+        .forEach((h) => push('dim', `  ${h.cmd.padEnd(16)} ${h.desc}`))
       push('text', t.value.shell.helpFooter)
     },
     about: () => printAbout(),
@@ -436,7 +542,7 @@ export function useShell(): UseShell {
     logout: (args) => HANDLERS.exit(args),
   }
 
-  const COMMAND_NAMES = Object.keys(HANDLERS)
+  const commandNames = computed(() => Object.keys(HANDLERS).filter(offers))
 
   function execute(raw: string): void {
     const trimmed = raw.trim()
@@ -447,7 +553,7 @@ export function useShell(): UseShell {
     const cmd = tokens[0].toLowerCase()
     track('shell', { target: cmd })
     const args = tokens.slice(1)
-    const handler = HANDLERS[cmd]
+    const handler = offers(cmd) ? HANDLERS[cmd] : undefined
     if (!handler) {
       push('error', fmt(t.value.shell.messages.notFound, { cmd }))
       push('text', t.value.shell.messages.tryHelp)
@@ -479,7 +585,7 @@ export function useShell(): UseShell {
     if (tokens.length <= 1) {
       const partial = (tokens[0] ?? '').toLowerCase()
       if (!partial) return
-      const matches = COMMAND_NAMES.filter((c) => c.startsWith(partial))
+      const matches = commandNames.value.filter((c) => c.startsWith(partial))
       if (matches.length === 1) inputValue.value = matches[0] + ' '
       else if (matches.length > 1) push('dim', matches.join('  '))
       return
@@ -489,13 +595,13 @@ export function useShell(): UseShell {
     let candidates: string[] = []
     if (cmd === 'cat')
       candidates = [
-        ...ROOT_FILES,
+        ...rootFiles.value,
         ...jobSlugs().map((s) => `experience/${s}.log`),
         ...projectSlugs().map((s) => `projects/${s}.proj`),
       ]
     else if (cmd === 'cd' || cmd === 'goto') candidates = sectionOrder()
     else if (cmd === 'lang') candidates = supportedLangs()
-    else if (cmd === 'man') candidates = COMMAND_NAMES
+    else if (cmd === 'man') candidates = commandNames.value
     if (!candidates.length) return
     const matches = candidates.filter((c) => c.startsWith(last))
     if (matches.length === 1) {

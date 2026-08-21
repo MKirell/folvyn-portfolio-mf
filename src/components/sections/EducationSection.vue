@@ -26,8 +26,12 @@
         </h2>
       </header>
 
-      <div v-reveal class="grid grid-cols-2 max-900:grid-cols-1 gap-12">
-        <div>
+      <div
+        v-reveal
+        class="grid gap-12"
+        :class="hasDegrees && hasCertifications ? 'grid-cols-2 max-900:grid-cols-1' : 'grid-cols-1'"
+      >
+        <div v-if="hasDegrees">
           <div class="flex min-h-[26px] items-center justify-between gap-3 mb-[26px]">
             <p
               class="font-mono font-medium text-accent-deep tracking-[0.1em] uppercase text-[0.78rem]"
@@ -37,7 +41,7 @@
             <PageControl
               :page="degrees.page.value"
               :page-count="degrees.pageCount.value"
-              label="degrees"
+              :label="t.labels.degrees"
               @previous="degrees.previous"
               @next="degrees.next"
               @go="degrees.go"
@@ -118,7 +122,7 @@
             </li>
           </ul>
         </div>
-        <div>
+        <div v-if="hasCertifications">
           <div class="flex min-h-[26px] items-center justify-between gap-3 mb-[26px]">
             <p
               class="font-mono font-medium text-accent-deep tracking-[0.1em] uppercase text-[0.78rem]"
@@ -128,7 +132,7 @@
             <PageControl
               :page="certifications.page.value"
               :page-count="certifications.pageCount.value"
-              label="certifications"
+              :label="t.labels.certifications"
               @previous="certifications.previous"
               @next="certifications.next"
               @go="certifications.go"
@@ -194,4 +198,7 @@ const certifications = usePagedList(
   PAGE_SIZE.certifications,
   lang,
 )
+
+const hasDegrees = computed(() => education.value.degrees.length > 0)
+const hasCertifications = computed(() => education.value.certifications.length > 0)
 </script>

@@ -30,7 +30,7 @@
         <PageControl
           :page="paged.page.value"
           :page-count="paged.pageCount.value"
-          label="skill categories"
+          :label="a11y.skillCategories"
           @previous="paged.previous"
           @next="paged.next"
           @go="paged.go"
@@ -52,7 +52,7 @@
             class="w-[38px] h-[38px] flex items-center justify-center text-accent-deep rounded-[10px] bg-accent/[0.14] mb-4"
             aria-hidden="true"
           >
-            <component :is="icons[cat.icon]" :size="19" :stroke-width="1.8" />
+            <component :is="iconFor(cat.icon)" :size="19" :stroke-width="1.8" />
           </div>
           <h3 class="font-disp text-base font-semibold text-ink mb-4">{{ cat.title }}</h3>
           <ul class="flex flex-wrap gap-[7px]" :aria-label="a11y.technologies">
@@ -80,12 +80,12 @@ defineProps<{ tinted?: boolean }>()
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useMessages, useA11y } from '@/i18n'
-import type { Component } from 'vue'
 import { useLanguage } from '@/composables/useLanguage'
 import { usePagedList } from '@/composables/usePagedList'
 import PageControl from '@/components/items/PageControl.vue'
 import { PAGE_SIZE } from '@/config/app'
-import { Brain, Bot, Activity, Database, Globe, Cloud, Code2, Languages, Wrench } from '@lucide/vue'
+import { iconFor } from '@/utils/icons'
+import { Wrench } from '@lucide/vue'
 
 const a11y = useA11y()
 const store = usePortfolioStore()
@@ -94,15 +94,4 @@ const { skillCategories } = storeToRefs(store)
 
 const { lang } = useLanguage()
 const paged = usePagedList(skillCategories, PAGE_SIZE.skillCategories, lang)
-
-const icons: Record<string, Component> = {
-  Brain,
-  Bot,
-  Activity,
-  Database,
-  Globe,
-  Cloud,
-  Code2,
-  Languages,
-}
 </script>

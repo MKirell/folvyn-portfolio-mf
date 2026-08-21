@@ -71,7 +71,7 @@
     "year": "year",
     "years": "years"
   },
-  "footer": "© {year} {brand} · All rights reserved",
+  "footer": "Build your own portfolio on {brand}",
   "shell": {
     "promptUser": "guest",
     "promptHost": "folvyn",
@@ -179,10 +179,10 @@
       "cdUsage": "usage: cd <section> — try one of: {sections}",
       "cdUnknown": "cd: {name}: No such section. Try one of: {sections}",
       "cdNavigating": "Navigating to #{section}…",
-      "cdSections": "hero, about, experience, projects, skills, education, achievements, contact",
       "langSwitched": "Language switched to {lang}.",
       "langUnknown": "Unknown language '{code}'. Try: {codes}",
       "resumeOpening": "Opening résumé ({file})…",
+      "resumeMissing": "resume: no CV has been published yet.",
       "linkOpening": "Opening {url} in a new tab…",
       "emailOpening": "Opening mail client…",
       "manUnknown": "No manual entry for {cmd}",
@@ -225,7 +225,16 @@
     "technologies": "Technologies",
     "switchLanguage": "Language: {current}. Switch to {next}",
     "notPublished": "This portfolio is not published yet.",
-    "unreachable": "Could not reach the portfolio service."
+    "unreachable": "Could not reach the portfolio service.",
+    "goToTop": "Go to the top of the page",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu",
+    "switchToDark": "Switch to the dark theme",
+    "switchToLight": "Switch to the light theme",
+    "previousIn": "Previous {name}",
+    "nextIn": "Next {name}",
+    "goToPageIn": "Go to {name} page {page}",
+    "buildYours": "Build your own portfolio on {brand}"
   },
   "vocabularies": {
     "honors": {

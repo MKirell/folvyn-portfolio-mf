@@ -26,8 +26,12 @@
         </h2>
       </header>
 
-      <div v-reveal class="grid grid-cols-2 max-900:grid-cols-1 gap-12">
-        <div>
+      <div
+        v-reveal
+        class="grid gap-12"
+        :class="hasVolunteering && hasAwards ? 'grid-cols-2 max-900:grid-cols-1' : 'grid-cols-1'"
+      >
+        <div v-if="hasVolunteering">
           <div class="flex min-h-[26px] items-center justify-between gap-3 mb-[22px]">
             <h3
               class="font-mono text-[0.78rem] font-medium text-accent-deep tracking-[0.1em] uppercase"
@@ -37,7 +41,7 @@
             <PageControl
               :page="volunteering.page.value"
               :page-count="volunteering.pageCount.value"
-              label="volunteering"
+              :label="t.labels.volunteering"
               @previous="volunteering.previous"
               @next="volunteering.next"
               @go="volunteering.go"
@@ -96,7 +100,7 @@
             </li>
           </ul>
         </div>
-        <div>
+        <div v-if="hasAwards">
           <div class="flex min-h-[26px] items-center justify-between gap-3 mb-[22px]">
             <h3
               class="font-mono text-[0.78rem] font-medium text-accent-deep tracking-[0.1em] uppercase"
@@ -106,7 +110,7 @@
             <PageControl
               :page="awards.page.value"
               :page-count="awards.pageCount.value"
-              label="awards"
+              :label="t.labels.awards"
               @previous="awards.previous"
               @next="awards.next"
               @go="awards.go"
@@ -125,7 +129,7 @@
                 class="shrink-0 w-10 h-10 flex items-center justify-center text-gold rounded-[10px] bg-gold/[0.14]"
                 aria-hidden="true"
               >
-                <component :is="icons[award.icon]" :size="19" :stroke-width="1.8" />
+                <component :is="iconFor(award.icon)" :size="19" :stroke-width="1.8" />
               </div>
               <div class="flex-1 max-600:min-w-0">
                 <p class="text-[0.92rem] text-ink font-medium mb-[3px]">
@@ -245,21 +249,13 @@
 <script setup lang="ts">
 defineProps<{ tinted?: boolean }>()
 
-import { computed, ref, onUnmounted, type Component } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import { boldify } from '@/utils/text'
 import { docUrl, imgUrl } from '@/utils/docs'
 import { flagUrl } from '@/utils/flags'
 import { formatMonthShort } from '@/utils/period'
-import {
-  Paperclip,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Trophy,
-  Medal,
-  Award,
-  Sparkles,
-} from '@lucide/vue'
+import { iconFor } from '@/utils/icons'
+import { Paperclip, X, ChevronLeft, ChevronRight, Sparkles } from '@lucide/vue'
 import { storeToRefs } from 'pinia'
 import { usePortfolioStore } from '@/stores/portfolio'
 import { useMessages, useA11y, useActiveLang } from '@/i18n'
@@ -293,14 +289,15 @@ const awards = usePagedList(
   lang,
 )
 
+const hasVolunteering = computed(() => achievements.value.volunteering.length > 0)
+const hasAwards = computed(() => achievements.value.awards.length > 0)
+
 interface Lightbox {
   open: boolean
   images: string[]
   index: number
   title: string
 }
-
-const icons: Record<string, Component> = { Trophy, Medal, Award }
 
 const lightbox = ref<Lightbox>({ open: false, images: [], index: 0, title: '' })
 

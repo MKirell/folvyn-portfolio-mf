@@ -82,9 +82,9 @@ describe('components', () => {
   })
 
   describe('AppFooter', () => {
-    it('renders the footer copy', async () => {
-      expect(render(AppFooter).text()).toContain(String(new Date().getFullYear()))
+    it('invites the reader to build their own, on the brand', async () => {
       expect(render(AppFooter).text()).toContain('Folvyn')
+      expect(render(AppFooter).text()).toContain('Build your own portfolio')
     })
   })
 

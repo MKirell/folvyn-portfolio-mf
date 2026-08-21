@@ -12,7 +12,7 @@
     <a
       href="#main-content"
       class="flex items-center shrink-0 justify-self-start"
-      :aria-label="`${BRAND} – go to top`"
+      :aria-label="a11y.goToTop"
     >
       <img :src="logoUrl" :alt="BRAND" class="h-8 max-700:h-7 w-auto block" />
     </a>
@@ -106,8 +106,8 @@
           type="button"
           role="switch"
           :aria-checked="isLight"
-          :aria-label="isLight ? 'Switch to dark theme' : 'Switch to light theme'"
-          :title="isLight ? 'Switch to dark theme' : 'Switch to light theme'"
+          :aria-label="themeLabel"
+          :title="themeLabel"
           class="group relative inline-flex h-8 w-[60px] shrink-0 items-center overflow-hidden rounded-full border border-line/12 p-[3px] cursor-pointer transition-[background-color,box-shadow] duration-500 ease-out motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
           :class="
             isLight
@@ -164,7 +164,7 @@
     <button
       id="burger"
       class="hidden max-700:flex max-700:z-[100] max-700:ms-auto items-center justify-center text-ink bg-transparent border-0 cursor-pointer p-[6px] -mr-[6px]"
-      :aria-label="menuOpen ? 'Close menu' : 'Open menu'"
+      :aria-label="menuOpen ? a11y.closeMenu : a11y.openMenu"
       :aria-expanded="menuOpen"
       aria-controls="navDrawer"
       @click="menuOpen = !menuOpen"
@@ -233,6 +233,9 @@ const switchLabel = computed(() =>
 )
 const { theme, toggleTheme } = useTheme()
 const isLight = computed(() => theme.value === 'light')
+const themeLabel = computed(() =>
+  isLight.value ? a11y.value.switchToDark : a11y.value.switchToLight,
+)
 
 const activeLangIndex = computed(() =>
   Math.max(

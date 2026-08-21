@@ -4,13 +4,31 @@
       <div
         class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 max-700:grid-cols-1 max-700:justify-items-center max-700:gap-[10px] max-700:text-center"
       >
-        <img
-          :src="logoUrl"
-          :alt="BRAND"
-          class="h-[26px] max-700:h-[22px] w-auto block justify-self-start max-700:justify-self-center"
-        />
+        <a
+          href="#main-content"
+          class="flex shrink-0 items-center justify-self-start max-700:justify-self-center"
+          :aria-label="a11y.goToTop"
+        >
+          <img :src="logoUrl" :alt="BRAND" class="h-[26px] max-700:h-[22px] w-auto block" />
+        </a>
 
-        <small class="text-ink-soft text-[0.75rem] font-mono justify-self-center">{{
+        <a
+          v-if="CONSOLE_URL"
+          :href="CONSOLE_URL"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 justify-self-center text-ink-soft text-[0.75rem] font-mono transition-colors motion-reduce:transition-none hover:text-accent-deep"
+          :aria-label="fill(a11y.buildYours, { brand: BRAND })"
+        >
+          {{ footerCopy }}
+          <ArrowUpRight
+            :size="13"
+            :stroke-width="2"
+            class="shrink-0 text-gold animate-icon-hint"
+            aria-hidden="true"
+          />
+        </a>
+        <small v-else class="text-ink-soft text-[0.75rem] font-mono justify-self-center">{{
           footerCopy
         }}</small>
         <nav
@@ -40,6 +58,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { ArrowUpRight } from '@lucide/vue'
 import { useTheme } from '@/composables/useTheme'
 import { BRAND } from '@/config/app'
 import { brandLogo } from '@/utils/logo'
@@ -56,9 +75,7 @@ function legalUrl(slug: 'privacy' | 'terms'): string {
   return lang ? `${CONSOLE_URL}/legal/${slug}?lang=${lang}` : `${CONSOLE_URL}/legal/${slug}`
 }
 
-const footerCopy = computed(() =>
-  fill(t.value.footer, { year: new Date().getFullYear(), brand: BRAND }),
-)
+const footerCopy = computed(() => fill(t.value.footer, { brand: BRAND }))
 
 const { theme } = useTheme()
 const logoUrl = computed(() => brandLogo(theme.value === 'light'))

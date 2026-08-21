@@ -29,7 +29,7 @@
         <PageControl
           :page="paged.page.value"
           :page-count="paged.pageCount.value"
-          label="projects"
+          :label="t.nav.projects"
           @previous="paged.previous"
           @next="paged.next"
           @go="paged.go"

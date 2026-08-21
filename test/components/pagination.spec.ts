@@ -128,7 +128,7 @@ describe('the page control appears only when it is needed', () => {
     patch({ projects: fixtures.en.projects.slice(0, PAGE_SIZE.projects) })
     const wrapper = render(ProjectsSection)
 
-    expect(wrapper.find('[aria-label="Next projects"]').exists()).toBe(false)
+    expect(wrapper.find('[aria-label="Next Projects"]').exists()).toBe(false)
   })
 
   it('appears as soon as one item does not fit', async () => {
@@ -137,8 +137,8 @@ describe('the page control appears only when it is needed', () => {
     const wrapper = render(ProjectsSection)
     await nextTick()
 
-    expect(wrapper.find('[aria-label="Next projects"]').exists()).toBe(true)
-    expect(wrapper.findAll('[aria-label^="Go to projects page"]')).toHaveLength(2)
+    expect(wrapper.find('[aria-label="Next Projects"]').exists()).toBe(true)
+    expect(wrapper.findAll('[aria-label^="Go to Projects page"]')).toHaveLength(2)
   })
 
   it('pages projects without dropping or repeating one', async () => {
@@ -153,7 +153,7 @@ describe('the page control appears only when it is needed', () => {
     expect(wrapper.text()).toContain('Project 0')
     expect(wrapper.text()).not.toContain(`Project ${PAGE_SIZE.projects}`)
 
-    await wrapper.find('[aria-label="Next projects"]').trigger('click')
+    await wrapper.find('[aria-label="Next Projects"]').trigger('click')
     expect(wrapper.text()).toContain(`Project ${PAGE_SIZE.projects}`)
     expect(wrapper.text()).not.toContain('Project 0')
   })
@@ -168,7 +168,7 @@ describe('the page control appears only when it is needed', () => {
     const wrapper = render(SkillsSection)
     await nextTick()
 
-    expect(wrapper.find('[aria-label="Next skill categories"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="Next Skill categories"]').exists()).toBe(true)
   })
 
   it('paginates degrees and certifications independently', async () => {
@@ -186,10 +186,10 @@ describe('the page control appears only when it is needed', () => {
     const wrapper = render(EducationSection)
     await nextTick()
 
-    expect(wrapper.find('[aria-label="Next degrees"]').exists()).toBe(true)
-    expect(wrapper.find('[aria-label="Next certifications"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="Next Degrees"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="Next Certifications"]').exists()).toBe(true)
 
-    await wrapper.find('[aria-label="Next degrees"]').trigger('click')
+    await wrapper.find('[aria-label="Next Degrees"]').trigger('click')
     expect(wrapper.text()).toContain(`Degree ${PAGE_SIZE.degrees}`)
   })
 
@@ -212,8 +212,8 @@ describe('the page control appears only when it is needed', () => {
     const wrapper = render(AchievementsSection)
     await nextTick()
 
-    expect(wrapper.find('[aria-label="Next awards"]').exists()).toBe(true)
-    expect(wrapper.find('[aria-label="Next volunteering"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="Next Awards"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-label="Next Volunteering"]').exists()).toBe(true)
   })
 })
 

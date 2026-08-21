@@ -6,7 +6,7 @@
       class="shrink-0 w-10 h-10 flex items-center justify-center text-accent-deep rounded-[10px] bg-accent/[0.14]"
       aria-hidden="true"
     >
-      <component :is="icons[item.icon]" :size="19" :stroke-width="1.8" />
+      <component :is="iconFor(item.icon)" :size="19" :stroke-width="1.8" />
     </div>
     <div class="flex-1 max-600:min-w-0">
       <p class="text-[0.92rem] text-ink font-medium mb-[3px]">{{ item.title }}</p>
@@ -35,6 +35,9 @@
       >
         <Paperclip :size="15" />
       </a>
+      <span v-else class="inline-flex items-center leading-none text-ink-soft opacity-30">
+        <Paperclip :size="15" aria-hidden="true" />
+      </span>
     </span>
   </li>
 </template>
@@ -45,7 +48,7 @@ import { computed } from 'vue'
 import { docUrl } from '@/utils/docs'
 import { formatMonthShort } from '@/utils/period'
 import { useActiveLang } from '@/i18n'
-import { icons } from '@/utils/icons'
+import { iconFor } from '@/utils/icons'
 import type { ApiCertification } from '@/types/api'
 import { useA11y } from '@/i18n'
 

@@ -11,15 +11,15 @@
   "headings": {
     "about": "Qui suis-je ?",
     "experience": "Où ai-je travaillé ?",
-    "projects": "Qu'ai-je réalisé ?",
+    "projects": "Qu’ai-je réalisé ?",
     "skills": "Que sais-je faire ?",
-    "education": "Qu'ai-je étudié ?",
-    "achievements": "Qu'ai-je accompli ?",
+    "education": "Qu’ai-je étudié ?",
+    "achievements": "Qu’ai-je accompli ?",
     "contact": "Comment me contacter ?"
   },
   "consent": {
     "title": "Compter mes visites successives ?",
-    "body": "La mesure d'audience ne vous identifie jamais. En acceptant, un identifiant est conservé sur cet appareil afin de distinguer une visite de retour d'une première visite. Rien n'est partagé, et vous pouvez revenir sur ce choix à tout moment.",
+    "body": "La mesure d’audience ne vous identifie jamais. En acceptant, un identifiant est conservé sur cet appareil afin de distinguer une visite de retour d’une première visite. Rien n’est partagé, et vous pouvez revenir sur ce choix à tout moment.",
     "accept": "Compter les retours",
     "refuse": "Rester anonyme",
     "note": "aucune publicité, aucun tiers",
@@ -27,7 +27,7 @@
   },
   "labels": {
     "currentRole": "En poste",
-    "showMore": "Voir l'expérience précédente",
+    "showMore": "Voir les expériences précédentes",
     "showLess": "Voir moins",
     "earlierRoles": "postes précédents",
     "privacy": "Confidentialité",
@@ -36,12 +36,12 @@
     "certifications": "Certifications",
     "spokenLanguages": "Langues",
     "volunteering": "Bénévolat",
-    "awards": "Récompenses",
+    "awards": "Distinctions",
     "email": "E-mail",
     "phone": "Téléphone",
     "linkedin": "LinkedIn",
     "location": "Localisation",
-    "contactCta": "M'envoyer un message →",
+    "contactCta": "M’envoyer un message →",
     "contactBlurbWorking": "Actuellement **{role}** chez **{org}**. Ouvert aux nouvelles opportunités et aux échanges.",
     "contactBlurbRole": "Actuellement **{role}**. Ouvert aux nouvelles opportunités et aux échanges.",
     "contactBlurbPlain": "Ouvert aux nouvelles opportunités et aux échanges."
@@ -59,10 +59,10 @@
     }
   },
   "stats": {
-    "experience": "années d'expérience",
+    "experience": "années d’expérience",
     "projects": "projets personnels",
     "certifications": "certifications tech",
-    "awards": "prix en compétition"
+    "awards": "distinctions en compétition"
   },
   "period": {
     "present": "Présent",
@@ -71,7 +71,7 @@
     "year": "an",
     "years": "ans"
   },
-  "footer": "© {year} {brand} · Tous droits réservés",
+  "footer": "Créez le vôtre sur {brand}",
   "shell": {
     "promptUser": "invite",
     "promptHost": "folvyn",
@@ -161,32 +161,32 @@
       },
       {
         "cmd": "clear",
-        "desc": "effacer l'écran"
+        "desc": "effacer l’écran"
       },
       {
         "cmd": "man <cmd>",
-        "desc": "manuel d'une commande"
+        "desc": "manuel d’une commande"
       }
     ],
-    "helpFooter": "Astuce : ↑ / ↓ pour l'historique, Tab pour autocompléter.",
+    "helpFooter": "Astuce : ↑ / ↓ pour l’historique, Tab pour autocompléter.",
     "messages": {
       "notFound": "commande introuvable : {cmd}",
       "tryHelp": "Tapez 'help' pour voir les commandes disponibles.",
       "catNotFound": "cat : {name} : Fichier ou dossier introuvable",
       "catUsage": "usage : cat <file>",
-      "sudoDenied": "invite n'est pas dans le fichier sudoers. Cet incident sera signalé. (pas vraiment — tapez 'contact' pour un accès réel 😉)",
-      "sudoSandwich": "D'accord. 🥪",
+      "sudoDenied": "invite n’est pas dans le fichier sudoers. Cet incident sera signalé. (pas vraiment — tapez 'contact' pour un accès réel 😉)",
+      "sudoSandwich": "D’accord. 🥪",
       "sudoRm": "Bien tenté. Ce portfolio a de meilleures sauvegardes que ça. 😏",
       "slJoke": "🚂💨 Tchou-tchou ! (Vous vouliez dire 'ls', non ?)",
-      "dirJoke": "Ceci n'est pas Windows 😉 — essayez 'ls'.",
+      "dirJoke": "Ceci n’est pas Windows 😉 — essayez 'ls'.",
       "exitMsg": "Impossible de fermer ce terminal — mais 'Échap' peut désactiver le prompt si besoin.",
       "cdUsage": "usage : cd <section> — essayez : {sections}",
       "cdUnknown": "cd : {name} : Section introuvable. Essayez : {sections}",
       "cdNavigating": "Navigation vers #{section}…",
-      "cdSections": "hero, about, experience, projects, skills, education, achievements, contact",
       "langSwitched": "Langue changée en {lang}.",
       "langUnknown": "Langue inconnue '{code}'. Essayez : {codes}",
       "resumeOpening": "Ouverture du CV ({file})…",
+      "resumeMissing": "resume : aucun CV n’a encore été publié.",
       "linkOpening": "Ouverture de {url} dans un nouvel onglet…",
       "emailOpening": "Ouverture du client mail…",
       "manUnknown": "Aucune entrée de manuel pour {cmd}",
@@ -229,7 +229,16 @@
     "technologies": "Technologies",
     "switchLanguage": "Langue : {current}. Passer à {next}",
     "notPublished": "Ce portfolio n’est pas encore publié.",
-    "unreachable": "Le service du portfolio est injoignable."
+    "unreachable": "Le service du portfolio est injoignable.",
+    "goToTop": "Revenir en haut de la page",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "switchToDark": "Passer au thème sombre",
+    "switchToLight": "Passer au thème clair",
+    "previousIn": "{name} : page précédente",
+    "nextIn": "{name} : page suivante",
+    "goToPageIn": "{name} : aller à la page {page}",
+    "buildYours": "Créez votre portfolio sur {brand}"
   },
   "vocabularies": {
     "honors": {
