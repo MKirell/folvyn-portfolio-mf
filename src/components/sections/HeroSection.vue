@@ -5,7 +5,7 @@
   ></div>
   <section
     id="hero"
-    class="relative overflow-hidden max-w-container mx-auto min-h-[94vh] max-900:min-h-0 grid grid-cols-[1fr_408px] max-900:grid-cols-1 items-center gap-[72px] pt-[calc(theme(spacing.pad)+88px)] max-700:pt-[calc(theme(spacing.pad)+56px)] px-pad pb-24 max-900:pb-[60px]"
+    class="relative overflow-hidden max-w-container mx-auto min-h-[94vh] max-900:min-h-0 grid grid-cols-[1fr_408px] max-900:grid-cols-1 items-center gap-[72px] pt-[calc(theme(spacing.pad)+88px)] max-700:pt-[calc(theme(spacing.pad)+84px)] px-pad pb-24 max-900:pb-[60px]"
     :class="tinted ? 'bg-bg-tint' : ''"
     aria-labelledby="hero-heading"
   >

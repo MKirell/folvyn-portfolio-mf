@@ -254,7 +254,7 @@ const stars = [
   { top: '10px', left: '24px', delay: '500ms' },
 ]
 
-const SCROLLED_AT = 10
+const SCROLLED_AT = 40
 
 const scrolled = ref(false)
 const menuOpen = ref(false)

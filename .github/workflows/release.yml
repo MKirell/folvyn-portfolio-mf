@@ -133,3 +133,19 @@ jobs:
           done
           echo "/fol/ never served the portfolio shell" >&2
           exit 1
+
+      - name: Summary
+        if: always()
+        env:
+          ENVIRONMENT: ${{ inputs.environment }}
+        run: |
+          {
+            echo "## $ENVIRONMENT — ${{ job.status }}"
+            echo
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| commit | \`${{ github.sha }}\` |"
+            echo "| branch | \`${{ github.ref_name }}\` |"
+            echo "| site | ${{ vars.SITE_URL }} |"
+            echo "| bucket | \`${{ vars.S3_BUCKET }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
