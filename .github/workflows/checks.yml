@@ -26,24 +26,38 @@ jobs:
           git clone --depth 1 --branch "${{ github.ref_name }}" "$repo" ../folvyn-portfolio-ms             || git clone --depth 1 "$repo" ../folvyn-portfolio-ms
 
       - name: Typecheck
+        id: typecheck
         run: npm run typecheck
 
       - name: Lint
+        id: lint
         run: npm run lint
 
       - name: Format
+        id: format
         run: npm run format:check
 
       - name: Test with the coverage gate
+        id: tests
         run: npm run test:cov
 
       - name: Summary
         if: always()
         run: |
           {
-            echo "### checks — ${{ job.status }}"
+            echo "## Quality — ${{ job.status }}"
             echo
-            echo "Typecheck, lint, formatting and the unit suite with its coverage gate."
+            echo "| step | outcome |"
+            echo "| --- | --- |"
+            echo "| Typecheck | ${{ steps.typecheck.outcome || 'skipped' }} |"
+            echo "| Lint | ${{ steps.lint.outcome || 'skipped' }} |"
+            echo "| Format | ${{ steps.format.outcome || 'skipped' }} |"
+            echo "| Test with the coverage gate | ${{ steps.tests.outcome || 'skipped' }} |"
+            echo
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| commit | \`${{ github.sha }}\` |"
+            echo "| branch | \`${{ github.ref_name }}\` |"
           } >> "$GITHUB_STEP_SUMMARY"
   e2e:
     needs: checks

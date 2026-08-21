@@ -34,10 +34,13 @@ test.describe('navbar', () => {
     await expect(site.locator('#navbar')).toHaveClass(/before:bg-transparent/)
   })
 
-  test('engages its background within the first few pixels of scroll', async ({ site }) => {
+  test('engages its background once the page has actually moved', async ({ site }) => {
     await site.goto('/fol/ada-lovelace')
 
     await site.mouse.wheel(0, 12)
+    await expect(site.locator('#navbar')).toHaveClass(/before:bg-transparent/)
+
+    await site.mouse.wheel(0, 80)
     await expect(site.locator('#navbar')).toHaveClass(/before:bg-bg\/82/)
   })
 
@@ -47,7 +50,7 @@ test.describe('navbar', () => {
 
     await expect.poll(async () => (await navbar.boundingBox())?.height).toBe(72)
 
-    await site.mouse.wheel(0, 12)
+    await site.mouse.wheel(0, 92)
     await expect(navbar).toHaveClass(/h-16/)
     await expect.poll(async () => (await navbar.boundingBox())?.height).toBe(64)
   })
