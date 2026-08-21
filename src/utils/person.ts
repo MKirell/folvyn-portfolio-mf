@@ -4,7 +4,7 @@ import type { Messages } from '../i18n/types'
 import type { ApiPerson } from '../types/api'
 
 export function fullName(person: Pick<ApiPerson, 'givenName' | 'familyName'>): string {
-  return `${person.givenName} ${person.familyName}`.trim()
+  return [person.givenName, person.familyName].filter(Boolean).join(' ').trim()
 }
 
 export function displayPhone(phone: string): string {

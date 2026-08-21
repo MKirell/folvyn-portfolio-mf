@@ -96,11 +96,13 @@
       </div>
 
       <p
+        v-if="education.spokenLanguages.length"
         class="font-mono text-[0.78rem] font-medium text-accent-deep tracking-[0.1em] uppercase mt-8 mb-[22px]"
       >
         {{ t.labels.spokenLanguages }}
       </p>
       <ul
+        v-if="education.spokenLanguages.length"
         v-reveal
         class="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] max-700:grid-cols-1 gap-8"
         :aria-label="a11y.languageProficiency"
