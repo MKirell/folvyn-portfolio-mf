@@ -181,10 +181,20 @@ the real service, so the suite runs against the true response shape rather than 
 
 ## Deployment
 
-Push to `main` → `.github/workflows/ci.yml`:
+Push to `develop` deploys dev; push to `main` deploys production. Both run the checks first, then the
+release:
 
-1. **quality** — typecheck, lint, format check, tests
-2. **deploy** — build against the live API, upload to S3, invalidate CloudFront, smoke-test the live URL
+1. **checks** — typecheck, lint, format check, tests
+2. **e2e** — Playwright in Chromium against the running site
+3. **secrets** — the tree scanned for anything that looks like a credential
+4. **deploy** — build against the live API, upload to S3, invalidate CloudFront, ship the renderer, ask
+   it for every published portfolio, then smoke-test the live URL
+
+A render pass also removes prerendered pages for slugs no portfolio claims any more: those pages name a
+fingerprinted bundle, and a deploy that replaces the bundle would otherwise leave an address answering
+with a page whose scripts are gone.
+
+Every job writes a summary, so a run can be read from its Summary tab without opening a log.
 
 Fingerprinted assets are uploaded immutable for a year; `index.html` is uploaded uncached, so a deploy is
 visible immediately without serving stale JavaScript.
